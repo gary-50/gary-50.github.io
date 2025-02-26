@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self'; 
-        connect-src 'self' https://generativelanguage.googleapis.com; 
+        connect-src 'self' https://generativelanguage.googleapis.com https://api.deepseek.com; 
         script-src 'self' https://cdn.jsdelivr.net/npm/marked/ https://unpkg.com/feather-icons 'unsafe-inline'; 
         style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
         font-src 'self' https://fonts.gstatic.com;
@@ -34,52 +34,95 @@
     
     <div class="container">
         <div class="settings-panel">
-            <h2>API密钥管理</h2>
-            <div class="api-keys-container">
+            <!-- API提供商选择 -->
+            <h2>API提供商</h2>
+            <div class="api-provider-selection">
+                <div class="provider-option">
+                    <input type="radio" id="googleProvider" name="apiProvider" value="google">
+                    <label for="googleProvider">Google AI (Gemini)</label>
+                </div>
+                <div class="provider-option">
+                    <input type="radio" id="deepseekProvider" name="apiProvider" value="deepseek">
+                    <label for="deepseekProvider">DeepSeek AI</label>
+                </div>
+            </div>
+            
+            <!-- DeepSeek API密钥区域 -->
+            <div id="deepseekApiSection" class="api-section" style="display: none;">
+                <h2>DeepSeek API密钥</h2>
                 <div class="api-key-inputs">
-                    <!-- API密钥输入字段 -->
                     <div class="api-key-input">
-                        <label for="apiKey1">API密钥 1</label>
-                        <input type="password" id="apiKey1" placeholder="输入API密钥">
-                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
-                    </div>
-                    <div class="api-key-input">
-                        <label for="apiKey2">API密钥 2</label>
-                        <input type="password" id="apiKey2" placeholder="输入API密钥">
-                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
-                    </div>
-                    <div class="api-key-input">
-                        <label for="apiKey3">API密钥 3</label>
-                        <input type="password" id="apiKey3" placeholder="输入API密钥">
-                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
-                    </div>
-                    <div class="api-key-input">
-                        <label for="apiKey4">API密钥 4</label>
-                        <input type="password" id="apiKey4" placeholder="输入API密钥">
-                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
-                    </div>
-                    <div class="api-key-input">
-                        <label for="apiKey5">API密钥 5</label>
-                        <input type="password" id="apiKey5" placeholder="输入API密钥">
+                        <label for="deepseekApiKey">DeepSeek API密钥</label>
+                        <input type="password" id="deepseekApiKey" placeholder="输入DeepSeek API密钥">
                         <button class="show-hide-btn"><i data-feather="eye"></i></button>
                     </div>
                 </div>
             </div>
             
-            <!-- 模型选择部分 -->
-            <h2 style="margin-top: 2rem;">模型选择</h2>
-            <div class="model-selection-container">
-                <div class="model-option">
-                    <input type="radio" id="model1" name="modelChoice" value="gemini-2.0-pro-exp-02-05">
-                    <label for="model1">gemini-2.0-pro-exp-02-05（默认）</label>
+            <!-- Google API密钥区域 -->
+            <div id="googleApiSection" class="api-section">
+                <h2>Google API密钥管理</h2>
+                <div class="api-keys-container">
+                    <div class="api-key-inputs">
+                        <!-- API密钥输入字段 -->
+                        <div class="api-key-input">
+                            <label for="apiKey1">API密钥 1</label>
+                            <input type="password" id="apiKey1" placeholder="输入API密钥">
+                            <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                        </div>
+                        <div class="api-key-input">
+                            <label for="apiKey2">API密钥 2</label>
+                            <input type="password" id="apiKey2" placeholder="输入API密钥">
+                            <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                        </div>
+                        <div class="api-key-input">
+                            <label for="apiKey3">API密钥 3</label>
+                            <input type="password" id="apiKey3" placeholder="输入API密钥">
+                            <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                        </div>
+                        <div class="api-key-input">
+                            <label for="apiKey4">API密钥 4</label>
+                            <input type="password" id="apiKey4" placeholder="输入API密钥">
+                            <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                        </div>
+                        <div class="api-key-input">
+                            <label for="apiKey5">API密钥 5</label>
+                            <input type="password" id="apiKey5" placeholder="输入API密钥">
+                            <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                        </div>
+                    </div>
                 </div>
-                <div class="model-option">
-                    <input type="radio" id="model2" name="modelChoice" value="gemini-2.0-flash-thinking-exp-01-21">
-                    <label for="model2">gemini-2.0-flash-thinking-exp-01-21</label>
+            
+                <!-- 模型选择部分 -->
+                <h2 style="margin-top: 2rem;">Google模型选择</h2>
+                <div class="model-selection-container">
+                    <div class="model-option">
+                        <input type="radio" id="model1" name="modelChoice" value="gemini-2.0-pro-exp-02-05">
+                        <label for="model1">gemini-2.0-pro-exp-02-05（默认）</label>
+                    </div>
+                    <div class="model-option">
+                        <input type="radio" id="model2" name="modelChoice" value="gemini-2.0-flash-thinking-exp-01-21">
+                        <label for="model2">gemini-2.0-flash-thinking-exp-01-21</label>
+                    </div>
+                    <div class="model-option">
+                        <input type="radio" id="model3" name="modelChoice" value="gemini-2.0-flash">
+                        <label for="model3">gemini-2.0-flash</label>
+                    </div>
                 </div>
-                <div class="model-option">
-                    <input type="radio" id="model3" name="modelChoice" value="gemini-2.0-flash">
-                    <label for="model3">gemini-2.0-flash</label>
+            </div>
+            
+            <!-- DeepSeek模型选择部分 -->
+            <div id="deepseekModelSection" class="api-section" style="display: none;">
+                <h2 style="margin-top: 2rem;">DeepSeek模型选择</h2>
+                <div class="model-selection-container">
+                    <div class="model-option">
+                        <input type="radio" id="deepseekModel1" name="deepseekModelChoice" value="deepseek-reasoner">
+                        <label for="deepseekModel1">DeepSeek-Reasoner（默认）</label>
+                    </div>
+                    <div class="model-option">
+                        <input type="radio" id="deepseekModel2" name="deepseekModelChoice" value="deepseek-chat">
+                        <label for="deepseekModel2">DeepSeek-Chat</label>
+                    </div>
                 </div>
             </div>
             

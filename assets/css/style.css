@@ -436,14 +436,17 @@ button:active {
     margin: 1em 0;
 }
 
-.explanation-content code {
+/* 内联代码样式 */
+.explanation-content code:not([class*="language-"]) {
     background-color: rgba(99, 102, 241, 0.1);
     padding: 0.2em 0.4em;
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
     color: var(--primary-color);
+    white-space: nowrap;
 }
 
+/* 代码块容器样式 */
 .explanation-content pre {
     background-color: rgba(99, 102, 241, 0.05);
     padding: 1em;
@@ -451,6 +454,20 @@ button:active {
     overflow-x: auto;
     margin: 1.5em 0;
     border-left: 3px solid var(--primary-color);
+}
+
+/* 代码块内部样式 */
+.explanation-content pre code {
+    padding: 0 !important;
+    background-color: transparent !important;
+    color: inherit;
+    border-radius: 0;
+    white-space: pre;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+    width: 100%;
+    display: block;
 }
 
 .explanation-content p {
@@ -464,6 +481,21 @@ button:active {
     color: var(--text-secondary);
     background-color: rgba(99, 102, 241, 0.05);
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+/* 确保代码块在暗色模式下也有良好的对比度 */
+.dark-mode .explanation-content pre {
+    background-color: rgba(15, 23, 42, 0.8);
+}
+
+.dark-mode .explanation-content pre code {
+    color: #e2e8f0;
+}
+
+/* 确保语法高亮能够正确显示 */
+.explanation-content .hljs {
+    background: transparent;
+    padding: 0;
 }
 
 /* 错误消息样式 */
@@ -575,6 +607,60 @@ button:active {
 .show-hide-btn:hover {
     background-color: rgba(99, 102, 241, 0.1);
     color: var(--primary-color);
+}
+
+/* API提供商选择样式 */
+.api-provider-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    background-color: rgba(99, 102, 241, 0.03);
+}
+
+.provider-option {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.provider-option:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+}
+
+.provider-option input[type="radio"] {
+    margin-right: 10px;
+}
+
+.provider-option label {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.provider-option input[type="radio"]:checked + label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* API部分分隔样式 */
+.api-section {
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1.5rem;
+}
+
+/* 加载动画 */
+.spin {
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* 添加动画效果 */
@@ -880,4 +966,255 @@ footer {
     .welcome-section p {
         font-size: 1rem;
     }
+}
+
+/* ========= 代码编辑器样式增强 ========= */
+.editor-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: calc(var(--border-radius) - 4px);
+    background-color: var(--card-bg);
+}
+
+/* 行号样式 */
+.line-numbers {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 1rem 8px 1rem 5px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    color: var(--text-secondary);
+    background-color: rgba(99, 102, 241, 0.05);
+    border-right: 1px solid var(--border-color);
+    overflow: hidden;
+    user-select: none;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* 代码输入区域样式 */
+.code-editor {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    padding: 1rem;
+    border: none;
+    resize: none;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--card-bg);
+    tab-size: 4;
+    -moz-tab-size: 4;
+    transition: var(--transition);
+    overflow: auto;
+}
+
+.code-editor:focus {
+    outline: none;
+}
+
+/* 高亮语法区域样式 */
+pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    overflow: auto !important;
+    flex: 1;
+}
+
+code {
+    padding: 1rem !important;
+    font-family: 'Fira Code', 'Consolas', monospace !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    background: transparent !important;
+    white-space: pre !important;
+    tab-size: 4 !important;
+    -moz-tab-size: 4 !important;
+    overflow: visible !important;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 代码输入区域的特殊样式 */
+.code-display-wrapper {
+    position: relative;
+    flex: 1;
+    overflow: auto;
+}
+
+.code-editor-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--text-primary);
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 1rem;
+    border: none;
+    resize: none;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    white-space: pre;
+    overflow: auto;
+}
+
+.code-editor-input::selection {
+    background: rgba(99, 102, 241, 0.3);
+    color: transparent;
+}
+
+.code-highlight-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    margin: 0;
+    padding: 0;
+    pointer-events: none;
+    overflow: visible;
+    white-space: pre;
+}
+
+.code-highlight-overlay code {
+    padding: 1rem !important;
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 100%;
+}
+
+/* 确保解释区域中的代码不受高亮影响 */
+.explanation-content code {
+    background-color: rgba(99, 102, 241, 0.1);
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    color: var(--primary-color);
+}
+
+.explanation-content pre {
+    background-color: rgba(99, 102, 241, 0.05);
+    padding: 1em;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    margin: 1.5em 0;
+    border-left: 3px solid var(--primary-color);
+}
+
+.explanation-content pre code {
+    padding: 0 !important;
+    background-color: transparent;
+    color: inherit;
+    border-radius: 0;
+}
+
+/* 语法高亮自定义 - 浅色主题适配 */
+:root:not(.dark-mode) .hljs {
+    background: transparent;
+    color: #24292e;
+}
+
+:root:not(.dark-mode) .hljs-keyword {
+    color: #d73a49;
+}
+
+:root:not(.dark-mode) .hljs-string {
+    color: #032f62;
+}
+
+:root:not(.dark-mode) .hljs-built_in {
+    color: #005cc5;
+}
+
+:root:not(.dark-mode) .hljs-comment {
+    color: #6a737d;
+}
+
+:root:not(.dark-mode) .hljs-number {
+    color: #005cc5;
+}
+
+:root:not(.dark-mode) .hljs-function {
+    color: #6f42c1;
+}
+
+:root:not(.dark-mode) .hljs-class {
+    color: #6f42c1;
+}
+
+:root:not(.dark-mode) .hljs-title {
+    color: #6f42c1;
+}
+
+/* 输入区域折叠时的样式调整 */
+.input-section.collapsed .editor-container,
+.input-section.collapsed .line-numbers {
+    display: none;
+}
+
+/* Tab缩进支持 */
+.tab-highlight {
+    display: inline-block;
+    width: 2ch;
+    opacity: 0.3;
+}
+
+/* 当前行高亮 */
+.current-line {
+    background-color: rgba(99, 102, 241, 0.08);
+}
+
+/* 亮色/暗色主题下文本区域背景调整 */
+.dark-mode .editor-container {
+    background-color: #1a2234;
+}
+
+.dark-mode .line-numbers {
+    background-color: rgba(99, 102, 241, 0.1);
+    color: #7d8590;
+}
+
+.dark-mode .code-editor,
+.dark-mode .editor-container code {
+    color: #e6edf3;
+    background-color: #1a2234;
+}
+
+/* 搜索匹配高亮 */
+.search-match {
+    background-color: rgba(255, 204, 0, 0.3);
+    border-radius: 2px;
+}
+
+.search-match.active {
+    background-color: rgba(255, 153, 0, 0.5);
+}
+
+/* 错误和警告标记 */
+.error-mark {
+    position: absolute;
+    border-bottom: 2px wavy var(--danger-color);
+}
+
+.warning-mark {
+    position: absolute;
+    border-bottom: 2px wavy var(--warning-color);
 }

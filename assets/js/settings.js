@@ -16,7 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
             ''
         ];
 
-        // 加载API密钥
+        // 加载API提供商设置
+        const savedProvider = localStorage.getItem('apiProvider') || 'google';
+        document.querySelector(`input[value="${savedProvider}"]`).checked = true;
+        
+        // 根据API提供商显示/隐藏相关区域
+        toggleApiSections(savedProvider);
+
+        // 加载Google API密钥
         for (let i = 1; i <= 5; i++) {
             const savedKey = localStorage.getItem(`apiKey${i}`);
             if (savedKey) {
@@ -29,12 +36,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // 加载模型选择
+        // 加载DeepSeek API密钥
+        const savedDeepseekKey = localStorage.getItem('deepseekApiKey');
+        if (savedDeepseekKey) {
+            document.getElementById('deepseekApiKey').value = savedDeepseekKey;
+        }
+
+        // 加载Google模型选择
         const savedModel = localStorage.getItem('selectedModel') || 'gemini-2.0-pro-exp-02-05';
         document.querySelector(`input[value="${savedModel}"]`).checked = true;
+        
+        // 加载DeepSeek模型选择
+        const savedDeepseekModel = localStorage.getItem('selectedDeepseekModel') || 'deepseek-reasoner';
+        document.querySelector(`input[value="${savedDeepseekModel}"]`).checked = true;
     }
     
     function setupEventListeners() {
+        // API提供商切换
+        document.querySelectorAll('input[name="apiProvider"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                toggleApiSections(this.value);
+            });
+        });
+
         // 显示/隐藏密钥按钮
         document.querySelectorAll('.show-hide-btn').forEach(btn => {
             btn.addEventListener('click', function() {
@@ -54,8 +78,24 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('saveApiKeys').addEventListener('click', saveSettings);
     }
     
+    function toggleApiSections(provider) {
+        if (provider === 'google') {
+            document.getElementById('googleApiSection').style.display = 'block';
+            document.getElementById('deepseekApiSection').style.display = 'none';
+            document.getElementById('deepseekModelSection').style.display = 'none';
+        } else if (provider === 'deepseek') {
+            document.getElementById('googleApiSection').style.display = 'none';
+            document.getElementById('deepseekApiSection').style.display = 'block';
+            document.getElementById('deepseekModelSection').style.display = 'block';
+        }
+    }
+    
     function saveSettings() {
-        // 保存API密钥
+        // 保存API提供商选择
+        const selectedProvider = document.querySelector('input[name="apiProvider"]:checked').value;
+        localStorage.setItem('apiProvider', selectedProvider);
+        
+        // 保存Google API密钥
         for (let i = 1; i <= 5; i++) {
             const key = document.getElementById(`apiKey${i}`).value.trim();
             if (key) {
@@ -65,9 +105,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // 保存选择的模型
+        // 保存DeepSeek API密钥
+        const deepseekKey = document.getElementById('deepseekApiKey').value.trim();
+        if (deepseekKey) {
+            localStorage.setItem('deepseekApiKey', deepseekKey);
+        } else {
+            localStorage.removeItem('deepseekApiKey');
+        }
+        
+        // 保存选择的Google模型
         const selectedModel = document.querySelector('input[name="modelChoice"]:checked').value;
         localStorage.setItem('selectedModel', selectedModel);
+        
+        // 保存选择的DeepSeek模型
+        const selectedDeepseekModel = document.querySelector('input[name="deepseekModelChoice"]:checked').value;
+        localStorage.setItem('selectedDeepseekModel', selectedDeepseekModel);
         
         alert('设置已保存！');
     }
