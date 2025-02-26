@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        connect-src 'self' https://generativelanguage.googleapis.com; 
+        script-src 'self' https://cdn.jsdelivr.net/npm/marked/ https://unpkg.com/feather-icons 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+    ">
+    <!-- 先加载common.js以确保尽早应用主题 -->
+    <script src="assets/js/common.js"></script>
+    <title>代码助手工具集</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="index.html" class="active">
+                <i data-feather="home"></i> 首页
+            </a>
+            <a href="pages/settings.html">
+                <i data-feather="settings"></i> 设置
+            </a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="切换暗色/亮色模式">
+            <i data-feather="moon"></i>
+        </button>
+    </nav>
+    
+    <div class="container">
+        <div class="welcome-section">
+            <h1>代码助手工具集</h1>
+            <p>欢迎使用代码助手工具集，这里提供多种实用的代码转换和开发辅助工具。</p>
+        </div>
+        
+        <div class="features-grid">
+            <!-- 实际功能卡片 -->
+            <a href="pages/cpp-to-python.html" class="feature-card">
+                <div class="feature-icon">
+                    <i data-feather="code"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>C++ 转 Python</h3>
+                    <p>将C++代码快速转换为等效的Python代码，并获取详细解释。</p>
+                </div>
+            </a>
+            
+            <div class="feature-card coming-soon">
+                <div class="feature-icon">
+                    <i data-feather="database"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>SQL优化助手</h3>
+                    <p>分析并优化您的SQL查询，提供性能改进建议。</p>
+                    <span class="coming-soon-badge">即将推出</span>
+                </div>
+            </div>
+            
+            <div class="feature-card coming-soon">
+                <div class="feature-icon">
+                    <i data-feather="git-branch"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>正则表达式生成器</h3>
+                    <p>根据描述自动生成并测试正则表达式。</p>
+                    <span class="coming-soon-badge">即将推出</span>
+                </div>
+            </div>
+            
+            <div class="feature-card coming-soon">
+                <div class="feature-icon">
+                    <i data-feather="clipboard"></i>
+                </div>
+                <div class="feature-content">
+                    <h3>代码注释生成器</h3>
+                    <p>为您的代码自动生成清晰的文档和注释。</p>
+                    <span class="coming-soon-badge">即将推出</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>© 2025 代码助手工具集 | 由 AI 技术驱动</p>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

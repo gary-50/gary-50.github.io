@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        connect-src 'self' https://generativelanguage.googleapis.com; 
+        script-src 'self' https://cdn.jsdelivr.net/npm/marked/ https://unpkg.com/feather-icons 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+    ">
+    <!-- 先加载common.js以确保尽早应用主题 -->
+    <script src="../assets/js/common.js"></script>
+    <title>设置 | 代码助手工具集</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="../index.html">
+                <i data-feather="home"></i> 首页
+            </a>
+            <a href="settings.html" class="active">
+                <i data-feather="settings"></i> 设置
+            </a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="切换暗色/亮色模式">
+            <i data-feather="moon"></i>
+        </button>
+    </nav>
+    
+    <div class="container">
+        <div class="settings-panel">
+            <h2>API密钥管理</h2>
+            <div class="api-keys-container">
+                <div class="api-key-inputs">
+                    <!-- API密钥输入字段 -->
+                    <div class="api-key-input">
+                        <label for="apiKey1">API密钥 1</label>
+                        <input type="password" id="apiKey1" placeholder="输入API密钥">
+                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                    </div>
+                    <div class="api-key-input">
+                        <label for="apiKey2">API密钥 2</label>
+                        <input type="password" id="apiKey2" placeholder="输入API密钥">
+                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                    </div>
+                    <div class="api-key-input">
+                        <label for="apiKey3">API密钥 3</label>
+                        <input type="password" id="apiKey3" placeholder="输入API密钥">
+                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                    </div>
+                    <div class="api-key-input">
+                        <label for="apiKey4">API密钥 4</label>
+                        <input type="password" id="apiKey4" placeholder="输入API密钥">
+                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                    </div>
+                    <div class="api-key-input">
+                        <label for="apiKey5">API密钥 5</label>
+                        <input type="password" id="apiKey5" placeholder="输入API密钥">
+                        <button class="show-hide-btn"><i data-feather="eye"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 模型选择部分 -->
+            <h2 style="margin-top: 2rem;">模型选择</h2>
+            <div class="model-selection-container">
+                <div class="model-option">
+                    <input type="radio" id="model1" name="modelChoice" value="gemini-2.0-pro-exp-02-05">
+                    <label for="model1">gemini-2.0-pro-exp-02-05（默认）</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="model2" name="modelChoice" value="gemini-2.0-flash-thinking-exp-01-21">
+                    <label for="model2">gemini-2.0-flash-thinking-exp-01-21</label>
+                </div>
+                <div class="model-option">
+                    <input type="radio" id="model3" name="modelChoice" value="gemini-2.0-flash">
+                    <label for="model3">gemini-2.0-flash</label>
+                </div>
+            </div>
+            
+            <button id="saveApiKeys" class="save-btn">保存设置</button>
+        </div>
+    </div>
+    
+    <script src="../assets/js/settings.js"></script>
+</body>
+</html>

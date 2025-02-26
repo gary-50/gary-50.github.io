@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        connect-src 'self' https://generativelanguage.googleapis.com; 
+        script-src 'self' https://cdn.jsdelivr.net/npm/marked/ https://unpkg.com/feather-icons 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+        font-src 'self' https://fonts.gstatic.com;
+    ">
+    <!-- 先加载common.js以确保尽早应用主题 -->
+    <script src="../assets/js/common.js"></script>
+    <title>C++到Python代码转换器 | 代码助手工具集</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="../index.html">
+                <i data-feather="home"></i> 首页
+            </a>
+            <a href="cpp-to-python.html" class="active">
+                <i data-feather="code"></i> C++转Python
+            </a>
+            <a href="settings.html">
+                <i data-feather="settings"></i> 设置
+            </a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="切换暗色/亮色模式">
+            <i data-feather="moon"></i>
+        </button>
+    </nav>
+    
+    <div class="container">
+        <div class="code-container">
+            <div class="input-section hover-card">
+                <div class="section-header">
+                    <h2><i data-feather="file-text"></i> C++ 代码</h2>
+                    <button id="toggleInput" class="toggle-btn">
+                        <i data-feather="chevrons-left" class="icon"></i> 折叠
+                    </button>
+                </div>
+                <textarea id="cppCode" placeholder="请输入C++代码..." spellcheck="false"></textarea>
+            </div>
+            
+            <div class="output-section hover-card">
+                <div class="section-header">
+                    <h2><i data-feather="code"></i> Python 代码转换结果</h2>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn always-active" data-tab="code">
+                        <i data-feather="code"></i> 代码
+                    </button>
+                    <button class="tab-btn always-active" data-tab="explanation">
+                        <i data-feather="book-open"></i> 详细解释
+                    </button>
+                </div>
+                <div class="output-content">
+                    <div class="tab-content output-panel" id="codeTab">
+                        <textarea id="pythonCode" readonly spellcheck="false"></textarea>
+                    </div>
+                    <div class="tab-content output-panel" id="explanationTab">
+                        <div id="explanation" class="explanation-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button id="convertBtn">
+            <i data-feather="refresh-cw"></i> 转换代码
+        </button>
+    </div>
+    
+    <script src="../assets/js/cpp-to-python.js"></script>
+</body>
+</html>
