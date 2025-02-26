@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-代码助手工具集是一个基于Web的应用程序，提供多种编程辅助工具，目前主要功能是将C++代码转换为Python代码。该工具使用Google的Generative Language API（Gemini模型）来实现智能代码转换，并提供详细的代码解释。
+代码助手工具集是一个基于Web的应用程序，提供多种编程辅助工具，目前主要功能是将C++代码转换为Python代码。该工具支持Google的Generative Language API（Gemini模型）和DeepSeek AI的API来实现智能代码转换，并提供详细的代码解释。
 
 ![工具截图](https://placeholder-image.com/screenshot.png)
 
@@ -14,8 +14,14 @@
   - 支持代码高亮显示
   - 可折叠的输入区域，优化界面布局
 
+- **多API提供商支持**：
+  - Google AI (Gemini) API支持
+  - DeepSeek AI API支持
+  - 支持不同模型选择
+
 - **设置管理**：
-  - API密钥管理（支持配置多个API密钥，自动轮换使用）
+  - API密钥管理（支持配置多个Google API密钥，自动轮换使用）
+  - DeepSeek API密钥配置
   - AI模型选择
   - 偏好设置持久化
 
@@ -30,8 +36,11 @@
 - **外部库**：
   - Feather Icons：轻量级图标库
   - Marked：Markdown解析库
+  - Highlight.js：代码语法高亮
   - Google Fonts：字体资源
-- **API**：Google Generative Language API (Gemini)
+- **API**：
+  - Google Generative Language API (Gemini)
+  - DeepSeek AI API
 
 ## 使用指南
 
@@ -39,7 +48,7 @@
 
 要使用本工具，您需要：
 
-1. 一个或多个Google AI（Gemini）API密钥
+1. 一个或多个Google AI（Gemini）API密钥，或者一个DeepSeek AI API密钥
 2. 现代网页浏览器（Chrome, Firefox, Edge等）
 
 ### 安装
@@ -49,9 +58,12 @@
 ### 配置
 
 1. 打开"设置"页面
-2. 添加您的API密钥（可以添加多个以轮换使用）
-3. 选择您想要使用的AI模型
-4. 点击"保存设置"按钮
+2. 选择API提供商（Google AI或DeepSeek AI）
+3. 添加您的API密钥：
+   - 对于Google AI，可以添加多个API密钥以轮换使用
+   - 对于DeepSeek AI，添加您的API密钥
+4. 选择您想要使用的AI模型
+5. 点击"保存设置"按钮
 
 ### 使用C++到Python转换器
 
@@ -82,9 +94,17 @@
 
 ## 特性与原理
 
+### API提供商切换
+
+系统支持在Google AI和DeepSeek AI之间切换，以利用不同提供商的特性和优势。对于不同的提供商，系统会自动调整API请求格式和参数。
+
 ### API密钥轮换机制
 
-为避免单个API密钥使用频率过高导致的限制，系统支持配置多个API密钥，并在每次请求时轮换使用不同的密钥。
+为避免单个API密钥使用频率过高导致的限制，系统支持配置多个Google API密钥，并在每次请求时轮换使用不同的密钥。
+
+### 代码高亮与编辑体验优化
+
+系统使用Highlight.js提供实时代码高亮，支持行号显示，Tab键缩进，为用户提供更好的代码编辑体验。
 
 ### 响应式设计
 
@@ -108,6 +128,7 @@
 - 本工具需要有效的API密钥才能使用
 - 转换结果的质量取决于所使用的AI模型
 - 对于非常复杂的代码，可能需要手动调整转换结果
+- 确保API密钥保密，不要在公共环境下使用或分享
 
 ## 许可证
 
