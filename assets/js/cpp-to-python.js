@@ -324,14 +324,14 @@ int main() {
         // 应用语法高亮
         hljs.highlightElement(pythonCodeElement);
 
-        // 更新解释内容，使用marked渲染Markdown并处理代码块
+        // 更新解释内容，使用marked渲染Markdown，不再对代码块应用语法高亮
         const explanationEl = document.getElementById('explanation');
         explanationEl.innerHTML = marked.parse(explanation);
         
-        // 对解释内容中的代码块应用额外处理
-        explanationEl.querySelectorAll('pre code').forEach(block => {
-            hljs.highlightElement(block);
-        });
+        // 移除对解释内容中代码块的语法高亮处理
+        // explanationEl.querySelectorAll('pre code').forEach(block => {
+        //     hljs.highlightElement(block);
+        // });
 
         // 自动激活"代码"标签页
         const codeBtn = document.querySelector('.tab-btn[data-tab="code"]');

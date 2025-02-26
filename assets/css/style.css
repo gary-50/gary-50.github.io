@@ -430,29 +430,44 @@ button:active {
     font-weight: 600;
 }
 
+.explanation-content p {
+    margin-bottom: 1em;
+}
+
 .explanation-content ul,
 .explanation-content ol {
     padding-left: 2em;
-    margin: 1em 0;
+    margin: 0.75em 0 1em;
 }
 
-/* 内联代码样式 */
+.explanation-content li {
+    margin-bottom: 0.4em;
+}
+
+.explanation-content li p {
+    margin-bottom: 0.4em;
+    display: inline;
+}
+
+/* 内联代码样式 - 更紧凑友好 */
 .explanation-content code:not([class*="language-"]) {
     background-color: rgba(99, 102, 241, 0.1);
     padding: 0.2em 0.4em;
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
     color: var(--primary-color);
-    white-space: nowrap;
+    white-space: normal; /* 允许换行 */
+    font-size: 0.92em;
+    display: inline; /* 确保代码是内联的 */
 }
 
 /* 代码块容器样式 */
 .explanation-content pre {
     background-color: rgba(99, 102, 241, 0.05);
-    padding: 1em;
+    padding: 0.8em;
     border-radius: var(--border-radius);
     overflow-x: auto;
-    margin: 1.5em 0;
+    margin: 1em 0;
     border-left: 3px solid var(--primary-color);
 }
 
@@ -462,25 +477,21 @@ button:active {
     background-color: transparent !important;
     color: inherit;
     border-radius: 0;
-    white-space: pre;
     font-family: 'Fira Code', monospace;
     font-size: 0.9em;
     line-height: 1.5;
     width: 100%;
     display: block;
+    white-space: pre-wrap; /* 保持格式但允许换行 */
 }
 
-.explanation-content p {
-    margin: 0.75em 0;
+/* 紧凑显示连续代码解释 */
+.explanation-content p + pre {
+    margin-top: 0.5em;
 }
 
-.explanation-content blockquote {
-    border-left: 4px solid var(--primary-color);
-    margin: 1.5em 0;
-    padding: 0.75em 1em;
-    color: var(--text-secondary);
-    background-color: rgba(99, 102, 241, 0.05);
-    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+.explanation-content pre + p {
+    margin-top: 0.7em;
 }
 
 /* 确保代码块在暗色模式下也有良好的对比度 */
@@ -1108,8 +1119,11 @@ code {
     border-radius: 4px;
     font-family: 'Fira Code', monospace;
     color: var(--primary-color);
+    white-space: normal; /* 修改：从nowrap改为normal，允许换行 */
+    display: inline; /* 添加：确保代码是内联的 */
 }
 
+/* 代码块容器样式 */
 .explanation-content pre {
     background-color: rgba(99, 102, 241, 0.05);
     padding: 1em;
@@ -1119,11 +1133,18 @@ code {
     border-left: 3px solid var(--primary-color);
 }
 
+/* 代码块内部样式 */
 .explanation-content pre code {
     padding: 0 !important;
-    background-color: transparent;
+    background-color: transparent !important;
     color: inherit;
     border-radius: 0;
+    white-space: pre-wrap; /* 修改：从pre改为pre-wrap，允许在需要时换行 */
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+    width: 100%;
+    display: block; /* 这里保持block，因为是代码块 */
 }
 
 /* 语法高亮自定义 - 浅色主题适配 */
