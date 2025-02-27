@@ -62,15 +62,30 @@ document.addEventListener('DOMContentLoaded', () => {
             adjustCodeWidth(this, sourceCodeElement);
         });
         
-        // 绑定滚动同步事件，同时支持垂直和水平滚动
+        // 改进的滚动同步事件处理
         sourceTextArea.addEventListener('scroll', function() {
             const overlay = sourceCodeElement.parentElement;
             overlay.scrollTop = this.scrollTop;
-            overlay.scrollLeft = this.scrollLeft;  // 同步水平滚动
-            sourceLineNumbers.scrollTop = this.scrollTop;
+            overlay.scrollLeft = this.scrollLeft;
+            
+            // 使用transform进行更准确的行号滚动同步
+            if (sourceLineNumbers) {
+                sourceLineNumbers.style.transform = `translateY(-${this.scrollTop}px)`;
+            }
         });
         
-        // 添加Tab键支持
+        // 修复：目标代码行号同步
+        const targetCode = document.getElementById('targetCode');
+        if (targetCode) {
+            targetCode.addEventListener('scroll', function() {
+                // 使用transform进行滚动同步，比改变scrollTop更流畅
+                if (targetLineNumbers) {
+                    targetLineNumbers.style.transform = `translateY(-${this.scrollTop}px)`;
+                }
+            });
+        }
+        
+        // 添加Tab键处理
         sourceTextArea.addEventListener('keydown', function(e) {
             if (e.key === 'Tab') {
                 e.preventDefault();
@@ -80,15 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 const end = this.selectionEnd;
                 
                 // 在光标位置插入Tab
-                this.value = this.value.substring(0, start) + '    ' + this.value.substring(end);
+                this.value = this.value.substring(0, start) + 
+                              '    ' + 
+                              this.value.substring(end);
                 
-                // 将光标位置移动到插入后的位置
+                // 重新定位光标
                 this.selectionStart = this.selectionEnd = start + 4;
                 
-                // 更新代码高亮和行号
-                const inputLang = document.getElementById('inputLanguage').value;
-                updateInputHighlighting(this.value, inputLang);
-                updateLineNumbers(sourceTextArea, sourceLineNumbers);
+                // 手动触发更新
+                const inputEvent = new Event('input');
+                this.dispatchEvent(inputEvent);
             }
         });
         
@@ -141,7 +157,7 @@ using namespace std;
 // 冒泡排序函数
 void bubbleSort(vector<int>& arr) {
     int n = arr.size();
-    for (int i = 0; i < n-1; i++) {
+    for (int i = 0; n-1; i++) {
         for (int j = 0; n-i-1; j++) {
             if (arr[j] > arr[j+1]) {
                 swap(arr[j], arr[j+1]);
@@ -194,7 +210,7 @@ int main() {
     int n = sizeof(numbers) / sizeof(numbers[0]);
     
     printf("排序前: ");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; n; i++) {
         printf("%d ", numbers[i]);
     }
     printf("\\n");
@@ -202,7 +218,7 @@ int main() {
     bubbleSort(numbers, n);
     
     printf("排序后: ");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; n; i++) {
         printf("%d ", numbers[i]);
     }
     printf("\\n");
@@ -436,7 +452,7 @@ func main() {
         adjustCodeWidth(document.getElementById('sourceCodeInput'), sourceCodeElement);
     }
     
-    // 更新行号
+    // 更新行号 - 改进对齐版
     function updateLineNumbers(textArea, lineNumbersElement) {
         const lines = textArea.value.split('\n');
         const lineCount = lines.length;
@@ -448,8 +464,30 @@ func main() {
         
         lineNumbersElement.innerHTML = lineNumbersHTML;
         
-        // 调整行号容器的高度以匹配文本区域
-        lineNumbersElement.style.height = `${textArea.scrollHeight}px`;
+        // 重置transform以避免之前的滚动影响
+        lineNumbersElement.style.transform = 'translateY(0)';
+        
+        // 计算行号容器的实际高度 - 添加额外空间确保底部行号显示
+        const lineHeight = 1.6; // 1.6em 是我们在CSS中设置的行高
+        const totalHeight = lineCount * lineHeight + 2; // 添加额外边距确保底部显示
+        lineNumbersElement.style.height = `${totalHeight}em`;
+        
+        // 确保有足够宽度显示行号
+        const maxDigits = Math.max(2, String(lineCount).length); // 至少2位数的宽度
+        lineNumbersElement.style.minWidth = `${maxDigits * 8 + 16}px`; // 8px每数字 + 16px内边距
+        
+        // 更新后微调第一行垂直位置，确保精确对齐
+        setTimeout(() => {
+            const firstCodeLine = textArea.value.split('\n')[0] || '';
+            const firstLineHeight = textArea.scrollHeight / lineCount;
+            
+            // 微调垂直位置以完美对齐
+            if (firstCodeLine && lineNumbersElement.children.length > 0) {
+                // 使用极小的padding调整来确保对齐
+                lineNumbersElement.style.paddingTop = 
+                    (parseInt(getComputedStyle(textArea).paddingTop) + 1) + 'px';
+            }
+        }, 10);
     }
     
     // 加载marked库
@@ -559,10 +597,22 @@ func main() {
             const inputLangName = langFullNames[inputLang];
             const outputLangName = langFullNames[outputLang];
             
-            // 构建提示词
-            const prompt = `你是编程大师，精通多种编程语言。请将以下${inputLangName}代码转换为${outputLangName}代码。在解释部分，请专注于解释转换后的${outputLangName}代码的语法特点和执行逻辑：
+            // 修改提示词，对C++进行特殊处理，让模型分开输出纯代码和解释
+            let prompt;
+            if (outputLang === 'cpp') {
+                prompt = `你是编程大师，精通多种编程语言。请将以下${inputLangName}代码转换为${outputLangName}代码。
+                
+请按照以下格式回复：
+1. 首先用三个反引号加cpp标识符包裹完整的、可以直接运行的C++代码，不要在代码中添加任何解释性文字
+2. 在代码块之后，另起一行，提供对C++代码的详细解释，包括语法特点和执行逻辑
+
+以下是需要转换的${inputLangName}代码：
+${codeInput}`;
+            } else {
+                prompt = `你是编程大师，精通多种编程语言。请将以下${inputLangName}代码转换为${outputLangName}代码。在解释部分，请专注于解释转换后的${outputLangName}代码的语法特点和执行逻辑：
 
 ${codeInput}`;
+            }
             
             let responseData;
             
@@ -661,11 +711,145 @@ ${codeInput}`;
         
         codeBtn.classList.add('active');
         codeTab.classList.add('active');
+        
+        // 为目标代码区域添加滚动监听，确保行号同步 - 修复滚动同步问题
+        const targetCode = document.getElementById('targetCode');
+        const targetLineNumbers = document.getElementById('targetLineNumbers');
+        if (targetCode && targetLineNumbers) {
+            // 使用直接的事件处理而不是addEventListener，避免重复绑定
+            targetCode.onscroll = function() {
+                targetLineNumbers.style.transform = `translateY(-${this.scrollTop}px)`;
+            };
+        }
+    }
+
+    // 处理API响应，根据输出语言提取正确的代码块
+    function processChatResponse(text, outputLang) {
+        // 针对C++的特殊处理
+        if (outputLang === 'cpp') {
+            // 尝试查找C++代码块，使用更精确的正则表达式
+            const cppCodeRegex = /```(?:cpp|c\+\+)\s*\n([\s\S]*?)```/;
+            const cppMatch = text.match(cppCodeRegex);
+            
+            if (cppMatch) {
+                let cppCode = cppMatch[1].trim();
+                
+                // 验证C++代码的完整性
+                if (cppCode.includes('#include')) {
+                    // 移除代码中可能混入的注释和解释
+                    cppCode = cleanCppCode(cppCode);
+                    
+                    // 提取剩余文本作为解释
+                    let explanation = text.replace(cppCodeRegex, '').trim();
+                    
+                    // 如果无法找到合适的解释，则默认生成一个基础解释
+                    if (!explanation) {
+                        explanation = "这是从其他语言转换为C++的代码。代码实现了相同的功能，但使用了C++的语法和特性。";
+                    }
+                    
+                    return [cppCode, explanation];
+                }
+            }
+        }
+        
+        // 常规代码处理逻辑（针对其他语言）
+        // 尝试匹配输出语言的代码块
+        const codeRegex = new RegExp("```(?:" + outputLang + "|" + outputLang.toLowerCase() + ")\\s*\\n([\\s\\S]*?)```");
+        let codeMatch = text.match(codeRegex);
+        
+        // 如果没找到特定语言的代码块，尝试查找任意代码块
+        if (!codeMatch) {
+            codeMatch = text.match(/```(?:\w*)\s*\n([\s\S]*?)```/);
+        }
+        
+        // 提取代码，如果没找到匹配则返回空字符串
+        let outputCode = codeMatch ? codeMatch[1].trim() : '';
+        
+        // 移除所有代码块，保留解释文本
+        let explanation = text.replace(/```[\s\S]*?```/g, '').trim();
+        
+        // 如果输出代码中包含大段解释文本，将其移到解释部分
+        if (outputCode) {
+            // 检查代码中是否包含大段解释文本（连续3行以上不包含代码特征的文本）
+            const explanationMarkers = [
+                /(?:解释|说明|注意|分析|理解)[:：]/i,
+                /explanation:/i,
+                /\/\*\s*(?:解释|说明|注意|分析)[\s\S]*?\*\//g  // 匹配多行注释块
+            ];
+            
+            // 检查代码是否包含解释标记
+            for (const marker of explanationMarkers) {
+                if (marker.test(outputCode)) {
+                    // 将这部分从代码中剥离，添加到解释中
+                    const extractedExplanation = outputCode.match(marker);
+                    if (extractedExplanation) {
+                        // 如果是正则表达式组，将匹配结果从代码中移除
+                        outputCode = outputCode.replace(extractedExplanation[0], '').trim();
+                        
+                        // 添加到解释部分
+                        if (explanation) {
+                            explanation += "\n\n" + extractedExplanation[0];
+                        } else {
+                            explanation = extractedExplanation[0];
+                        }
+                    }
+                }
+            }
+            
+            // 进一步清理代码，移除可能的解释段落
+            // 将连续多行非代码特征文本（没有常见代码符号如{}[]();等）移至解释部分
+            const codeLines = outputCode.split('\n');
+            let cleanedCodeLines = [];
+            let currentExplanation = [];
+            let inExplanationBlock = false;
+            
+            for (let i = 0; i < codeLines.length; i++) {
+                const line = codeLines[i];
+                // 检测是否为代码行（包含常见代码符号或缩进+标识符）
+                const isCodeLine = /[{}\[\]();:=<>!&|+\-*/%]|^\s*\w+/.test(line);
+                
+                if (isCodeLine || line.trim() === '') {
+                    // 如果我们在一个解释块中并且遇到了代码行，结束解释块
+                    if (inExplanationBlock && currentExplanation.length > 2) {
+                        // 只有当解释超过2行时才视为真正的解释
+                        if (explanation) {
+                            explanation += "\n\n" + currentExplanation.join("\n");
+                        } else {
+                            explanation = currentExplanation.join("\n");
+                        }
+                        currentExplanation = [];
+                    }
+                    inExplanationBlock = false;
+                    cleanedCodeLines.push(line);
+                } else {
+                    // 潜在的解释行
+                    inExplanationBlock = true;
+                    currentExplanation.push(line);
+                }
+            }
+            
+            // 检查是否在文件末尾有解释块
+            if (inExplanationBlock && currentExplanation.length > 2) {
+                if (explanation) {
+                    explanation += "\n\n" + currentExplanation.join("\n");
+                } else {
+                    explanation = currentExplanation.join("\n");
+                }
+            } else {
+                // 如果解释块太短，将其视为代码的一部分
+                cleanedCodeLines = cleanedCodeLines.concat(currentExplanation);
+            }
+            
+            // 更新处理后的代码
+            outputCode = cleanedCodeLines.join('\n').trim();
+        }
+        
+        return [outputCode, explanation];
     }
     
-    // 更新输出代码行号
-    function updateTargetLineNumbers(outputCode) {
-        const lines = outputCode.split('\n');
+    // 更新目标代码行号 - 改进对齐版
+    function updateTargetLineNumbers(code) {
+        const lines = code.split('\n');
         const lineCount = lines.length;
         const targetLineNumbers = document.getElementById('targetLineNumbers');
         
@@ -675,24 +859,92 @@ ${codeInput}`;
         }
         
         targetLineNumbers.innerHTML = lineNumbersHTML;
+        
+        // 重置transform以避免之前的滚动影响
+        targetLineNumbers.style.transform = 'translateY(0)';
+        
+        // 计算合适的总高度 - 添加额外空间确保底部行号显示
+        const lineHeight = 1.6; // 1.6em 是行高
+        const totalHeight = lineCount * lineHeight + 2; // 添加额外边距
+        targetLineNumbers.style.height = `${totalHeight}em`;
+        
+        // 确保有足够宽度显示行号
+        const maxDigits = Math.max(2, String(lineCount).length); // 至少2位数的宽度
+        targetLineNumbers.style.minWidth = `${maxDigits * 8 + 16}px`; // 8px每数字 + 16px内边距
+        
+        // 获取目标代码元素并调整样式
+        const targetCode = document.getElementById('targetCode');
+        if (targetCode) {
+            // 确保代码元素也有对应的行高
+            targetCode.style.lineHeight = '1.6';
+            
+            // 微调行号容器的垂直位置以完美对齐
+            setTimeout(() => {
+                targetLineNumbers.style.paddingTop = 
+                    (parseInt(getComputedStyle(targetCode).paddingTop) + 1) + 'px';
+                
+                // 重要：确保每次更新行号后重新绑定滚动事件
+                targetCode.onscroll = function() {
+                    targetLineNumbers.style.transform = `translateY(-${this.scrollTop}px)`;
+                };
+            }, 10);
+        }
     }
 
-    // 处理API响应，根据输出语言提取正确的代码块
-    function processChatResponse(text, outputLang) {
-        // 尝试匹配输出语言的代码块
-        const codeRegex = new RegExp("```" + outputLang + "\\n([\\s\\S]*?)```");
-        let codeMatch = text.match(codeRegex);
+    // 新增：清理C++代码的函数，移除混入的解释文本
+    function cleanCppCode(code) {
+        // 分析代码行
+        const lines = code.split('\n');
+        const cleanedLines = [];
+        let inMultiLineComment = false;
+        let inExplanationBlock = false;
+        let explanationBuffer = [];
         
-        // 如果没找到特定语言的代码块，尝试查找任意代码块
-        if (!codeMatch) {
-            codeMatch = text.match(/```(?:\w*)\n([\s\S]*?)```/);
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            
+            // 处理多行注释
+            if (line.includes('/*')) {
+                inMultiLineComment = true;
+            }
+            
+            if (inMultiLineComment) {
+                if (line.includes('*/')) {
+                    inMultiLineComment = false;
+                }
+                continue; // 跳过注释行
+            }
+            
+            // 跳过单行注释
+            if (line.startsWith('//')) {
+                continue;
+            }
+            
+            // 检测是否为非代码解释段
+            if (line.match(/^解释|说明|注意|分析|理解|Note|Explanation|首先|然后|最后|这里/i)) {
+                inExplanationBlock = true;
+                explanationBuffer.push(line);
+                continue;
+            }
+            
+            // 检测代码特征
+            const isCodeLine = /[{}\[\]();:=<>!&|+\-*/%#]|^\s*\w+/.test(line);
+            
+            if (inExplanationBlock) {
+                if (isCodeLine) {
+                    inExplanationBlock = false;
+                } else {
+                    explanationBuffer.push(line);
+                    continue;
+                }
+            }
+            
+            // 添加有效代码行
+            if (isCodeLine || line === '') {
+                cleanedLines.push(lines[i]); // 使用原始行，保留缩进
+            }
         }
         
-        const outputCode = codeMatch ? codeMatch[1].trim() : '';
-        
-        // 移除所有代码块后的文本作为解释
-        let explanation = text.replace(/```[\s\S]*?```/g, '').trim();
-        
-        return [outputCode, explanation];
+        return cleanedLines.join('\n');
     }
 });
