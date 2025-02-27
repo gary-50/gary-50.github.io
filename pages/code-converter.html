@@ -12,14 +12,18 @@
     ">
     <!-- 先加载common.js以确保尽早应用主题 -->
     <script src="../assets/js/common.js"></script>
-    <title>C++到Python代码转换器 | 代码助手工具集</title>
+    <title>多语言代码转换器 | 代码助手工具集</title>
     <link rel="stylesheet" href="../assets/css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <!-- 添加Highlight.js库 - 仅用于代码区域，不用于解释部分 -->
+    <!-- 添加Highlight.js库 - 支持多种语言 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
 </head>
 <body>
@@ -28,8 +32,8 @@
             <a href="../index.html">
                 <i data-feather="home"></i> 首页
             </a>
-            <a href="cpp-to-python.html" class="active">
-                <i data-feather="code"></i> C++转Python
+            <a href="code-converter.html" class="active">
+                <i data-feather="code"></i> 代码转换器
             </a>
             <a href="settings.html">
                 <i data-feather="settings"></i> 设置
@@ -41,26 +45,54 @@
     </nav>
     
     <div class="container">
+        <div class="language-selector-container">
+            <div class="language-selector">
+                <label for="inputLanguage">输入语言:</label>
+                <select id="inputLanguage" class="language-select">
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                    <option value="python">Python</option>
+                    <option value="java">Java</option>
+                    <option value="rust">Rust</option>
+                    <option value="go">Go</option>
+                </select>
+            </div>
+            <div class="language-direction">
+                <i data-feather="arrow-right"></i>
+            </div>
+            <div class="language-selector">
+                <label for="outputLanguage">输出语言:</label>
+                <select id="outputLanguage" class="language-select">
+                    <option value="python">Python</option>
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                    <option value="java">Java</option>
+                    <option value="rust">Rust</option>
+                    <option value="go">Go</option>
+                </select>
+            </div>
+        </div>
+
         <div class="code-container">
             <div class="input-section hover-card">
                 <div class="section-header">
-                    <h2><i data-feather="file-text"></i> C++ 代码</h2>
+                    <h2><i data-feather="file-text"></i> <span id="inputLanguageLabel">C++</span> 代码</h2>
                     <button id="toggleInput" class="toggle-btn">
                         <i data-feather="chevrons-left" class="icon"></i> 折叠
                     </button>
                 </div>
                 <div class="editor-container">
-                    <div class="line-numbers" id="cppLineNumbers"></div>
+                    <div class="line-numbers" id="sourceLineNumbers"></div>
                     <div class="code-display-wrapper">
-                        <textarea id="cppCodeInput" class="code-editor-input" placeholder="请输入C++代码..." spellcheck="false"></textarea>
-                        <pre class="code-highlight-overlay"><code id="cppCode" class="language-cpp"></code></pre>
+                        <textarea id="sourceCodeInput" class="code-editor-input" placeholder="请输入源代码..." spellcheck="false"></textarea>
+                        <pre class="code-highlight-overlay"><code id="sourceCode" class="language-cpp"></code></pre>
                     </div>
                 </div>
             </div>
             
             <div class="output-section hover-card">
                 <div class="section-header">
-                    <h2><i data-feather="code"></i> Python 代码转换结果</h2>
+                    <h2><i data-feather="code"></i> <span id="outputLanguageLabel">Python</span> 代码转换结果</h2>
                 </div>
                 <div class="tabs">
                     <button class="tab-btn always-active" data-tab="code">
@@ -73,8 +105,8 @@
                 <div class="output-content">
                     <div class="tab-content output-panel" id="codeTab">
                         <div class="editor-container">
-                            <div class="line-numbers" id="pythonLineNumbers"></div>
-                            <pre><code id="pythonCode" class="language-python"></code></pre>
+                            <div class="line-numbers" id="targetLineNumbers"></div>
+                            <pre><code id="targetCode" class="language-python"></code></pre>
                         </div>
                     </div>
                     <div class="tab-content output-panel" id="explanationTab">
@@ -89,6 +121,6 @@
         </button>
     </div>
     
-    <script src="../assets/js/cpp-to-python.js"></script>
+    <script src="../assets/js/code-converter.js"></script>
 </body>
 </html>

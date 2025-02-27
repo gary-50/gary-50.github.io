@@ -2,14 +2,14 @@
 
 ## 项目概述
 
-代码助手工具集是一个基于Web的应用程序，提供多种编程辅助工具，目前主要功能是将C++代码转换为Python代码。该工具支持Google的Generative Language API（Gemini模型）和DeepSeek AI的API来实现智能代码转换，并提供详细的代码解释。
+代码助手工具集是一个基于Web的应用程序，提供多种编程辅助工具，主要功能是实现多种编程语言之间的代码转换。该工具支持Google的Generative Language API（Gemini模型）和DeepSeek AI的API来实现智能代码转换，并提供详细的代码解释。
 
 ![工具截图](https://placeholder-image.com/screenshot.png)
 
 ## 主要功能
 
-- **C++到Python代码转换器**：
-  - 将C++代码自动转换为等效的Python代码
+- **多语言代码转换器**：
+  - 支持Python、C++、C、Java、Rust和Go六种语言之间的相互转换
   - 生成详细的代码解释，包括语法特点和执行逻辑
   - 支持代码高亮显示
   - 可折叠的输入区域，优化界面布局
@@ -65,14 +65,15 @@
 4. 选择您想要使用的AI模型
 5. 点击"保存设置"按钮
 
-### 使用C++到Python转换器
+### 使用多语言代码转换器
 
-1. 打开"C++转Python"页面
-2. 在左侧文本框中粘贴您的C++代码
-3. 点击"转换代码"按钮
-4. 在右侧查看生成的Python代码和详细解释
-5. 可以通过标签页切换查看不同的内容
-6. 可以通过折叠按钮优化界面布局
+1. 打开"多语言代码转换"页面
+2. 在左侧文本框中粘贴您的代码
+3. 选择源语言和目标语言
+4. 点击"转换代码"按钮
+5. 在右侧查看生成的代码和详细解释
+6. 可以通过标签页切换查看不同的内容
+7. 可以通过折叠按钮优化界面布局
 
 ## 项目结构
 
@@ -80,14 +81,14 @@
 /
 ├── index.html          # 主页
 ├── pages/              # 页面目录
-│   ├── cpp-to-python.html  # C++到Python转换工具页面
+│   ├── multi-lang-converter.html  # 多语言代码转换工具页面
 │   └── settings.html       # 设置页面
 ├── assets/             # 资源目录
 │   ├── css/
 │   │   └── style.css      # 全局样式表 
 │   └── js/
 │       ├── common.js       # 共享JavaScript功能（主题等）
-│       ├── cpp-to-python.js # C++到Python转换逻辑
+│       ├── multi-lang-converter.js # 多语言代码转换逻辑
 │       └── settings.js     # 设置页面逻辑
 └── README.md           # 项目文档
 ```
