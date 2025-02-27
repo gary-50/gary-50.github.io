@@ -50,6 +50,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const sourceLineNumbers = document.getElementById('sourceLineNumbers');
         const targetLineNumbers = document.getElementById('targetLineNumbers');
         
+        // 确保元素存在
+        if (!sourceTextArea || !sourceCodeElement || !sourceLineNumbers) {
+            console.error("找不到必要的DOM元素");
+            return;
+        }
+        
         // 初始化行号
         updateLineNumbers(sourceTextArea, sourceLineNumbers);
         
@@ -112,7 +118,11 @@ document.addEventListener('DOMContentLoaded', () => {
         loadExampleCode();
         
         // 初始化语法高亮库
-        hljs.highlightAll();
+        if (typeof hljs !== 'undefined') {
+            hljs.highlightAll();
+        } else {
+            console.warn("highlight.js库尚未加载完成");
+        }
     }
 
     // 加载示例代码
@@ -120,14 +130,35 @@ document.addEventListener('DOMContentLoaded', () => {
         const sourceTextArea = document.getElementById('sourceCodeInput');
         const sourceCodeElement = document.getElementById('sourceCode');
         const sourceLineNumbers = document.getElementById('sourceLineNumbers');
+        
+        if (!sourceTextArea || !sourceCodeElement) {
+            console.error("找不到代码编辑器必要元素");
+            return;
+        }
+        
         const inputLang = document.getElementById('inputLanguage').value;
+        console.log("当前选择的语言:", inputLang);
         
         // 如果代码区域为空，加载示例代码
-        if (!sourceTextArea.value) {
+        if (!sourceTextArea.value || sourceTextArea.value.trim() === '') {
+            console.log("加载示例代码...");
             const defaultCode = getDefaultCode(inputLang);
             sourceTextArea.value = defaultCode;
-            updateInputHighlighting(defaultCode, inputLang);
-            updateLineNumbers(sourceTextArea, sourceLineNumbers);
+            console.log("示例代码已设置");
+            
+            // 确保语法高亮更新
+            try {
+                updateInputHighlighting(defaultCode, inputLang);
+                console.log("语法高亮已更新");
+            } catch (e) {
+                console.error("更新语法高亮时出错:", e);
+            }
+            
+            // 更新行号
+            if (sourceLineNumbers) {
+                updateLineNumbers(sourceTextArea, sourceLineNumbers);
+                console.log("行号已更新");
+            }
         }
         
         // 初始化时调整一次宽度
@@ -157,8 +188,8 @@ using namespace std;
 // 冒泡排序函数
 void bubbleSort(vector<int>& arr) {
     int n = arr.size();
-    for (int i = 0; n-1; i++) {
-        for (int j = 0; n-i-1; j++) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
             if (arr[j] > arr[j+1]) {
                 swap(arr[j], arr[j+1]);
             }

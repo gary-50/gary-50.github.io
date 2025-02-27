@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="
+        default-src 'self'; 
+        connect-src 'self' https://api-proxy.me https://api.deepseek.com; 
+        script-src 'self' https://cdn.jsdelivr.net/npm/marked/ https://unpkg.com/feather-icons https://cdnjs.cloudflare.com/ajax/libs/highlight.js/ 'unsafe-inline'; 
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ajax/libs/highlight.js/;
+        font-src 'self' https://fonts.gstatic.com;
+    ">
+    <!-- 先加载common.js以确保尽早应用主题 -->
+    <script src="../assets/js/common.js"></script>
+    <title>代码生成器 | 代码助手工具集</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- 添加Highlight.js库 - 支持多种语言 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/matlab.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+</head>
+<body>
+    <nav>
+        <div class="nav-links">
+            <a href="../index.html">
+                <i data-feather="home"></i> 首页
+            </a>
+            <a href="code-converter.html">
+                <i data-feather="code"></i> 代码转换器
+            </a>
+            <a href="code-generator.html" class="active">
+                <i data-feather="file-plus"></i> 代码生成器
+            </a>
+            <a href="settings.html">
+                <i data-feather="settings"></i> 设置
+            </a>
+        </div>
+        <button id="themeToggle" class="theme-toggle" aria-label="切换暗色/亮色模式">
+            <i data-feather="moon"></i>
+        </button>
+    </nav>
+    
+    <div class="container">
+        <div class="language-selector-container">
+            <div class="language-selector">
+                <label for="targetLanguage">目标语言:</label>
+                <select id="targetLanguage" class="language-select">
+                    <option value="python">Python</option>
+                    <option value="cpp">C++</option>
+                    <option value="c">C</option>
+                    <option value="java">Java</option>
+                    <option value="rust">Rust</option>
+                    <option value="go">Go</option>
+                    <option value="matlab">MATLAB</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="code-container">
+            <div class="input-section hover-card">
+                <div class="section-header">
+                    <h2><i data-feather="edit-3"></i> 需求描述</h2>
+                    <button id="toggleInput" class="toggle-btn">
+                        <i data-feather="chevrons-left" class="icon"></i> 折叠
+                    </button>
+                </div>
+                <div class="editor-container">
+                    <div class="line-numbers" id="requirementLineNumbers"></div>
+                    <div class="code-display-wrapper">
+                        <textarea id="requirementInput" class="code-editor-input" placeholder="请详细描述您需要生成的代码功能和要求..." spellcheck="false"></textarea>
+                        <pre class="code-highlight-overlay"><code id="requirementCode" class="language-plaintext"></code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="output-section hover-card">
+                <div class="section-header">
+                    <h2><i data-feather="code"></i> <span id="outputLanguageLabel">Python</span> 生成代码</h2>
+                </div>
+                <div class="tabs">
+                    <button class="tab-btn always-active" data-tab="code">
+                        <i data-feather="code"></i> 代码
+                    </button>
+                    <button class="tab-btn always-active" data-tab="explanation">
+                        <i data-feather="book-open"></i> 详细解释
+                    </button>
+                </div>
+                <div class="output-content">
+                    <div class="tab-content output-panel" id="codeTab">
+                        <div class="editor-container">
+                            <div class="line-numbers" id="generatedLineNumbers"></div>
+                            <pre><code id="generatedCode" class="language-python"></code></pre>
+                        </div>
+                    </div>
+                    <div class="tab-content output-panel" id="explanationTab">
+                        <div id="explanation" class="explanation-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button id="generateBtn" class="convert-btn">
+            <i data-feather="cpu"></i> 生成代码
+        </button>
+
+        <div class="generator-tips">
+            <h3><i data-feather="info"></i> 提示</h3>
+            <ul>
+                <li>详细描述您需要实现的功能、算法或问题</li>
+                <li>说明输入、输出及其格式要求</li>
+                <li>指明任何特殊的性能或实现要求</li>
+                <li>可以提供伪代码或简单示例帮助AI理解</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script src="../assets/js/code-generator.js"></script>
+</body>
+</html>
