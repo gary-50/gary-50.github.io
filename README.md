@@ -4,8 +4,6 @@
 
 代码助手工具集是一个基于Web的应用程序，提供多种编程辅助工具，主要功能是实现多种编程语言之间的代码转换。该工具支持Google的Generative Language API（Gemini模型）和DeepSeek AI的API来实现智能代码转换，并提供详细的代码解释。
 
-![工具截图](https://placeholder-image.com/screenshot.png)
-
 ## 主要功能
 
 - **多语言代码转换器**：
