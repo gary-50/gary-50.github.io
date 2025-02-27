@@ -320,6 +320,17 @@ button:active {
     color: var(--primary-color);
 }
 
+/* 添加旋转动画 */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
 /* ========= 标签页系统 ========= */
 .tabs {
     display: flex;
@@ -664,16 +675,6 @@ button:active {
     margin-top: 1.5rem;
 }
 
-/* 加载动画 */
-.spin {
-    animation: spin 1.5s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* 添加动画效果 */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
@@ -685,79 +686,6 @@ button:active {
     20%, 80% { transform: translate3d(2px, 0, 0); }
     30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
     40%, 60% { transform: translate3d(3px, 0, 0); }
-}
-
-/* 提示和状态指示器 */
-.status-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
-}
-
-.status-active {
-    background-color: var(--success-color);
-    box-shadow: 0 0 5px var(--success-color);
-}
-
-.status-inactive {
-    background-color: var(--danger-color);
-    box-shadow: 0 0 5px var(--danger-color);
-}
-
-/* 加载动画 */
-.loading {
-    display: inline-block;
-    position: relative;
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-}
-
-.loading div {
-    position: absolute;
-    top: 5px;
-    width: 13px;
-    height: 13px;
-    border-radius: 50%;
-    background: white;
-    animation-timing-function: cubic-bezier(0, 1, 1, 0);
-}
-
-.loading div:nth-child(1) {
-    left: 0;
-    animation: loading1 0.6s infinite;
-}
-
-.loading div:nth-child(2) {
-    left: 0;
-    animation: loading2 0.6s infinite;
-}
-
-.loading div:nth-child(3) {
-    left: 20px;
-    animation: loading2 0.6s infinite;
-}
-
-.loading div:nth-child(4) {
-    left: 40px;
-    animation: loading3 0.6s infinite;
-}
-
-@keyframes loading1 {
-    0% { transform: scale(0); }
-    100% { transform: scale(1); }
-}
-
-@keyframes loading2 {
-    0% { transform: translate(0, 0); }
-    100% { transform: translate(19px, 0); }
-}
-
-@keyframes loading3 {
-    0% { transform: scale(1); }
-    100% { transform: scale(0); }
 }
 
 /* 卡片悬停效果 */
@@ -1061,6 +989,7 @@ code {
     position: relative;
     flex: 1;
     overflow: auto;
+    max-width: 100%;
 }
 
 .code-editor-input {
@@ -1083,11 +1012,7 @@ code {
     -moz-tab-size: 4;
     white-space: pre;
     overflow: auto;
-}
-
-.code-editor-input::selection {
-    background: rgba(99, 102, 241, 0.3);
-    color: transparent;
+    min-width: 100%;  /* 确保水平滚动正常工作 */
 }
 
 .code-highlight-overlay {
@@ -1102,12 +1027,14 @@ code {
     pointer-events: none;
     overflow: visible;
     white-space: pre;
+    min-width: 100%;  /* 确保与输入框宽度一致 */
 }
 
 .code-highlight-overlay code {
     padding: 1rem !important;
     position: relative;
-    width: 100%;
+    width: max-content;  /* 使内容可以扩展，允许水平滚动 */
+    min-width: 100%;     /* 至少与容器一样宽 */
     height: auto;
     min-height: 100%;
 }
@@ -1219,7 +1146,80 @@ code {
     background-color: #1a2234;
 }
 
-/* 搜索匹配高亮 */
+/* 以下样式可以移除：未使用的加载动画样式 */
+.loading {
+    display: inline-block;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.loading div {
+    position: absolute;
+    top: 5px;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: white;
+    animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+
+.loading div:nth-child(1) {
+    left: 0;
+    animation: loading1 0.6s infinite;
+}
+
+.loading div:nth-child(2) {
+    left: 0;
+    animation: loading2 0.6s infinite;
+}
+
+.loading div:nth-child(3) {
+    left: 20px;
+    animation: loading2 0.6s infinite;
+}
+
+.loading div:nth-child(4) {
+    left: 40px;
+    animation: loading3 0.6s infinite;
+}
+
+@keyframes loading1 {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+}
+
+@keyframes loading2 {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(19px, 0); }
+}
+
+@keyframes loading3 {
+    0% { transform: scale(1); }
+    100% { transform: scale(0); }
+}
+
+/* 以下样式可以移除：未使用的状态指示器 */
+.status-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.status-active {
+    background-color: var(--success-color);
+    box-shadow: 0 0 5px var(--success-color);
+}
+
+.status-inactive {
+    background-color: var(--danger-color);
+    box-shadow: 0 0 5px var(--danger-color);
+}
+
+/* 以下样式可以移除：未使用的搜索匹配功能 */
 .search-match {
     background-color: rgba(255, 204, 0, 0.3);
     border-radius: 2px;
@@ -1229,7 +1229,7 @@ code {
     background-color: rgba(255, 153, 0, 0.5);
 }
 
-/* 错误和警告标记 */
+/* 以下样式可以移除：未使用的代码错误和警告标记 */
 .error-mark {
     position: absolute;
     border-bottom: 2px wavy var(--danger-color);

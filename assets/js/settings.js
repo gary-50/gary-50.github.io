@@ -7,14 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function loadSavedSettings() {
-        // 默认API密钥（已移除）
-        const defaultApiKeys = [
-            '',
-            '',
-            '',
-            '',
-            ''
-        ];
+        // 默认API密钥已移除，无需保留以下注释和空数组
+        const defaultApiKeys = [];
 
         // 加载API提供商设置
         const savedProvider = localStorage.getItem('apiProvider') || 'google';

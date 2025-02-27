@@ -56,12 +56,15 @@ document.addEventListener('DOMContentLoaded', () => {
         cppTextArea.addEventListener('input', function() {
             updateCppHighlighting(this.value);
             updateLineNumbers(cppTextArea, cppLineNumbers);
+            // 确保代码高亮区域的宽度足够
+            adjustCodeWidth(this, cppCodeElement);
         });
         
-        // 绑定滚动同步事件
+        // 绑定滚动同步事件，同时支持垂直和水平滚动
         cppTextArea.addEventListener('scroll', function() {
             const overlay = cppCodeElement.parentElement;
             overlay.scrollTop = this.scrollTop;
+            overlay.scrollLeft = this.scrollLeft;  // 同步水平滚动
             cppLineNumbers.scrollTop = this.scrollTop;
         });
         
@@ -130,6 +133,31 @@ int main() {
         
         // 初始化语法高亮库
         hljs.highlightAll();
+        
+        // 初始化时调整一次宽度
+        if (cppTextArea.value) {
+            adjustCodeWidth(cppTextArea, cppCodeElement);
+        }
+    }
+    
+    // 根据内容调整代码宽度，确保长行可以水平滚动
+    function adjustCodeWidth(textArea, codeElement) {
+        // 计算最长行的宽度
+        const lines = textArea.value.split('\n');
+        let maxLineLength = 0;
+        
+        for (const line of lines) {
+            if (line.length > maxLineLength) {
+                maxLineLength = line.length;
+            }
+        }
+        
+        // 设置最小宽度以适应最长的行
+        // 乘以字符宽度的近似值（以ch为单位）
+        if (maxLineLength > 80) {  // 只有当行长度超过标准宽度时才调整
+            const minWidth = `${maxLineLength}ch`;
+            codeElement.style.minWidth = minWidth;
+        }
     }
     
     // 更新C++代码高亮
@@ -137,6 +165,9 @@ int main() {
         const cppCodeElement = document.getElementById('cppCode');
         cppCodeElement.textContent = code;
         hljs.highlightElement(cppCodeElement);
+        
+        // 调整宽度以适应代码内容
+        adjustCodeWidth(document.getElementById('cppCodeInput'), cppCodeElement);
     }
     
     // 更新行号
