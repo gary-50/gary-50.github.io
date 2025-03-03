@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI导航站 - 主流AI对话和API服务一览</title>
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c757d;
+            --light-bg: #f8f9fa;
+            --dark-bg: #343a40;
+            --success-color: #28a745;
+            --border-color: #dee2e6;
+            --sidebar-width: 250px;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .layout-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #fff;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform 0.3s ease;
+        }
+        
+        .content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 20px;
+            max-width: calc(100% - var(--sidebar-width));
+        }
+        
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        h2 {
+            color: var(--primary-color);
+            margin: 30px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        h3 {
+            color: var(--dark-bg);
+            margin: 25px 0 15px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        blockquote {
+            background-color: var(--light-bg);
+            border-left: 4px solid var(--primary-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        tr:hover {
+            background-color: #f1f4ff;
+        }
+        
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+            color: #2945c7;
+        }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: var(--border-color);
+            margin: 30px 0;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 5px;
+        }
+        
+        .toc {
+            background-color: var(--light-bg);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .toc ul {
+            list-style-type: none;
+            padding-left: 15px;
+        }
+        
+        .toc a {
+            display: block;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .toc-title {
+            text-align: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .category {
+            margin-bottom: 40px;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 200;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .layout-container {
+                display: block;
+            }
+            
+            .sidebar {
+                transform: translateX(-100%);
+                width: 80%;
+                max-width: 300px;
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .content {
+                margin-left: 0;
+                max-width: 100%;
+                padding: 15px;
+                margin-top: 60px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            table {
+                display: block;
+                overflow-x: auto;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-menu-toggle">☰ 目录</button>
+    
+    <div class="layout-container">
+        <div class="sidebar">
+            <div class="toc">
+                <h2 class="toc-title"><span class="emoji">📝</span> 目录</h2>
+                <ul>
+                    <li><a href="#conversation-models">💬 对话模型服务</a>
+                        <ul>
+                            <li><a href="#official-platforms">官方平台</a></li>
+                            <li><a href="#third-party-platforms">第三方平台</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#api-services">🔌 API服务</a>
+                        <ul>
+                            <li><a href="#official-api">官方API</a></li>
+                            <li><a href="#third-party-api">第三方API</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#special-tools">🛠️ 特色工具</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="container">
+                <h1><span class="emoji">🌟</span> AI导航站 <span class="emoji">🌟</span></h1>
+                
+                <blockquote>
+                    <p>本文档整理了我日常使用的AI对话和API服务。</p>
+                </blockquote>
+                
+                <hr>
+                
+                <div class="category" id="conversation-models">
+                    <h2><span class="emoji">💬</span> 对话模型服务</h2>
+                    
+                    <h3 id="official-platforms">官方平台</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>模型</th>
+                                <th>优势</th>
+                                <th>劣势</th>
+                                <th>官方链接</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ChatGPT</strong></td>
+                                <td>行业老大（暂时）</td>
+                                <td>严重降智现象，审查严格</td>
+                                <td><a href="https://chat.openai.com/" target="_blank">openai.com/chatgpt</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Claude</strong></td>
+                                <td>降智现象少，回答质量高</td>
+                                <td>封号风险大</td>
+                                <td><a href="https://claude.ai/" target="_blank">anthropic.com/claude</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Grok</strong></td>
+                                <td>模型强大，包含thinking模式和deepsearch</td>
+                                <td>暂时仅X订阅用户可用</td>
+                                <td><a href="https://grok.ai/" target="_blank">grok.ai</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google AI Studio</strong></td>
+                                <td>多种模型免费使用，次数限制少，速度快</td>
+                                <td>UI体验差，模型实力一般</td>
+                                <td><a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Deepseek</strong></td>
+                                <td>模型强大，完全免费</td>
+                                <td>审查严格，上下文窗口小(64k)，服务稳定性不足</td>
+                                <td><a href="https://chat.deepseek.com/" target="_blank">deepseek.com</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>qwen</strong></td>
+                                <td>免费使用，支持中文</td>
+                                <td>模型能力相对较弱</td>
+                                <td><a href="https://chat.qwen.ai/" target="_blank">qwen</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 id="third-party-platforms">第三方平台</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>平台</th>
+                                <th>特点</th>
+                                <th>链接</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>GitHub Copilot models</strong></td>
+                                <td>稳定，降智概率低，代码能力强</td>
+                                <td><a href="https://github.com/marketplace/models/azure-openai/o1/playground" target="_blank">GitHub Copilot models</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>GenSpark</strong></td>
+                                <td>通过邀请获取多种免费模型使用权，支持deep research</td>
+                                <td><a href="https://genspark.ai/" target="_blank">genspark.ai</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>XUB</strong></td>
+                                <td>公益站，模型纯正</td>
+                                <td><a href="https://www.xub.ai" target="_blank">xub.ai</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Chat01</strong></td>
+                                <td>ChatGPT原生体验，有积分系统，订阅价格较高</td>
+                                <td><a href="https://chat01.ai/" target="_blank">chat01.ai</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Poe</strong></td>
+                                <td>多种高级模型，但有严格的使用限额</td>
+                                <td><a href="https://poe.com/" target="_blank">poe.com</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Monica</strong></td>
+                                <td>支持Deepseek，但其他高级模型受限</td>
+                                <td><a href="https://monica.im/" target="_blank">monica.im</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>秘塔AI搜索</strong></td>
+                                <td>集成DeepseekR1，中文资料搜索优秀</td>
+                                <td><a href="https://metaso.cn/" target="_blank">metaso.cn</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Aurora AI</strong></td>
+                                <td>免费使用Deepseek，积分/会员使用更多模型</td>
+                                <td><a href="https://aurorai.cn/" target="_blank">aurorai.cn</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr>
+                
+                <div class="category" id="api-services">
+                    <h2><span class="emoji">🔌</span> API服务</h2>
+                    
+                    <h3 id="official-api">官方API</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>服务</th>
+                                <th>特点</th>
+                                <th>链接</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Deepseek API</strong></td>
+                                <td>国产大模型，中文支持好</td>
+                                <td><a href="https://platform.deepseek.com/usage" target="_blank">deepseek.com/api</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>OAIPro</strong></td>
+                                <td>官网API转发，新模型更新快，稳定性高，但价格较贵</td>
+                                <td><a href="https://api.oaipro.com/" target="_blank">oaipro.com</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>xAI API</strong></td>
+                                <td>目前仅支持Grok-2模型</td>
+                                <td><a href="https://console.x.ai/team/f9326da1-1ee8-4e93-9226-e6f1b5017266" target="_blank">x.ai/api</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>OpenRouter</strong></td>
+                                <td>多种模型聚合，需要外卡，有手续费</td>
+                                <td><a href="https://openrouter.ai/settings/keys" target="_blank">openrouter.ai</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Google AI Studio API</strong></td>
+                                <td>资源丰富，免费额度大</td>
+                                <td><a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>GitHub Models API</strong></td>
+                                <td>代码相关任务表现优秀</td>
+                                <td><a href="https://github.com/marketplace/models/azure-openai/o1/playground" target="_blank">github.com/features/copilot</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>硅基流动</strong></td>
+                                <td>专注国内模型API</td>
+                                <td><a href="https://account.siliconflow.cn/" target="_blank">guijitech.com</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h3 id="third-party-api">第三方API</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>服务</th>
+                                <th>特点</th>
+                                <th>链接</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Free40</strong></td>
+                                <td>稳定可靠，模型全面，提供免费额度</td>
+                                <td><a href="https://free40.fly.dev/dash" target="_blank">free40.fly.dev/dash</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>PoloAI</strong></td>
+                                <td>专注提供Claude 3.5 Sonnet模型</td>
+                                <td><a href="https://poloai.top/" target="_blank">poloai.top</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr>
+                
+                <div class="category" id="special-tools">
+                    <h2><span class="emoji">🛠️</span> 特色工具</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>工具</th>
+                                <th>功能</th>
+                                <th>链接</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Cherry Studio</strong></td>
+                                <td>非常好用的api平台</td>
+                                <td><a href="https://cherrystudio.app/" target="_blank">cherrystudio.app</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr>
+                
+                <blockquote>
+                    <p><strong>提示</strong>: 这只是我个人使用的经验总结，模型能力和服务状态可能随时变化，建议使用前先测试或查看最新评测。</p>
+                </blockquote>
+                
+                <blockquote>
+                    <p><strong>免责声明</strong>: 本导航仅供参考，使用第三方服务时请注意账号和数据安全。</p>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('.mobile-menu-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+        
+        // 点击链接后关闭移动端菜单
+        document.querySelectorAll('.sidebar a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    document.querySelector('.sidebar').classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
