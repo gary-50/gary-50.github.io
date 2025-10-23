@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="精美的2048游戏，支持AI自动模式">
+    <title>2048 游戏 - 精美版</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">2048</h1>
+            <div class="scores">
+                <div class="score-container">
+                    <div class="score-label">分数</div>
+                    <div class="score" id="score">0</div>
+                </div>
+                <div class="score-container">
+                    <div class="score-label">最高分</div>
+                    <div class="score" id="best-score">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-intro">
+            <p>使用方向键或滑动屏幕移动方块，相同数字会合并！</p>
+            <div class="button-group">
+                <button class="new-game-btn" id="new-game">新游戏</button>
+                <button class="auto-play-btn" id="auto-play">自动模式</button>
+            </div>
+        </div>
+
+        <div class="speed-control" id="speed-control">
+            <div class="speed-header">
+                <label for="speed-slider">AI速度：</label>
+                <span class="speed-value" id="speed-value">慢速</span>
+            </div>
+            <input type="range" id="speed-slider" class="speed-slider" min="1" max="3" value="2" step="1">
+            <div class="speed-labels">
+                <span>慢</span>
+                <span>快</span>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <div class="grid-container" id="grid-container">
+                <!-- 背景网格 -->
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+                <div class="grid-row">
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                    <div class="grid-cell"></div>
+                </div>
+            </div>
+            <div class="tile-container" id="tile-container"></div>
+        </div>
+
+        <div class="game-message" id="game-message">
+            <div class="message-content">
+                <p id="message-text"></p>
+                <button class="retry-btn" id="retry-btn">再试一次</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
