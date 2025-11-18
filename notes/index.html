@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>笔记专区 - 我的工具箱</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../main.css">
+    <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="../index.html" class="back-link">← 返回主页</a>
+            <h1 class="main-title">笔记专区</h1>
+            <p class="subtitle">记录与分享</p>
+        </header>
+
+        <main class="content">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="搜索笔记..." class="search-input">
+            </div>
+
+            <div id="notesList" class="notes-grid">
+                <!-- 笔记列表将通过 JavaScript 动态加载 -->
+            </div>
+
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <p>暂无笔记</p>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>持续记录中...</p>
+        </footer>
+    </div>
+
+    <script src="notes-config.js"></script>
+    <script src="notes.js"></script>
+</body>
+</html>

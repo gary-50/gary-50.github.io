@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="番茄钟 - 提升专注力的时间管理工具">
+    <title>番茄钟</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="theme-toggle-container">
+            <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">
+                <span class="theme-icon" id="themeIcon">🌙</span>
+            </button>
+        </div>
+        
+        <h1>🍅 番茄钟</h1>
+        <p class="subtitle">专注工作，高效休息</p>
+
+        <div class="main-content">
+            <!-- 左侧：计时器 -->
+            <div class="timer-section">
+                <!-- 模式选择 -->
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="work" onclick="switchMode('work')">
+                        <span class="mode-icon">💼</span>
+                        <span class="mode-label">工作</span>
+                        <span class="mode-time">25分钟</span>
+                    </button>
+                    <button class="mode-btn" data-mode="shortBreak" onclick="switchMode('shortBreak')">
+                        <span class="mode-icon">☕</span>
+                        <span class="mode-label">短休息</span>
+                        <span class="mode-time">5分钟</span>
+                    </button>
+                    <button class="mode-btn" data-mode="longBreak" onclick="switchMode('longBreak')">
+                        <span class="mode-icon">🌴</span>
+                        <span class="mode-label">长休息</span>
+                        <span class="mode-time">15分钟</span>
+                    </button>
+                </div>
+
+                <!-- 计时器显示 -->
+                <div class="timer-display">
+                    <div class="timer-circle">
+                        <svg class="progress-ring" width="300" height="300">
+                            <circle class="progress-ring-bg" cx="150" cy="150" r="140"></circle>
+                            <circle class="progress-ring-progress" id="progressCircle" cx="150" cy="150" r="140"></circle>
+                        </svg>
+                        <div class="timer-content">
+                            <div class="timer-text" id="timerText">25:00</div>
+                            <div class="timer-mode-label" id="modeLabel">准备开始工作</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 控制按钮 -->
+                <div class="controls">
+                    <button class="control-btn start-btn" id="startBtn" onclick="startTimer()">
+                        <span class="btn-icon">▶️</span>
+                        <span class="btn-text">开始</span>
+                    </button>
+                    <button class="control-btn reset-btn" id="resetBtn" onclick="resetTimer()">
+                        <span class="btn-icon">🔄</span>
+                        <span class="btn-text">重置</span>
+                    </button>
+                </div>
+
+                <!-- 统计信息 -->
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">✅</div>
+                        <div class="stat-content">
+                            <div class="stat-label">今日完成</div>
+                            <div class="stat-value" id="todayCount">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">📊</div>
+                        <div class="stat-content">
+                            <div class="stat-label">总计完成</div>
+                            <div class="stat-value" id="totalCount">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-content">
+                            <div class="stat-label">当前连击</div>
+                            <div class="stat-value" id="streakCount">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：任务列表和设置 -->
+            <div class="side-panel">
+                <!-- 任务列表 -->
+                <div class="task-section">
+                    <h2>📝 任务列表</h2>
+                    <div class="add-task">
+                        <input type="text" id="taskInput" placeholder="添加新任务..." maxlength="100">
+                        <button onclick="addTask()">➕</button>
+                    </div>
+                    <div class="task-list" id="taskList">
+                        <!-- 任务项将通过JS动态添加 -->
+                    </div>
+                </div>
+
+                <!-- 设置面板 -->
+                <div class="settings-section">
+                    <h2>⚙️ 设置</h2>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="autoStartBreak" checked>
+                            <span>自动开始休息</span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="autoStartWork">
+                            <span>自动开始工作</span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="soundEnabled" checked>
+                            <span>声音提醒</span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <label>
+                            <input type="checkbox" id="notificationEnabled" checked>
+                            <span>桌面通知</span>
+                        </label>
+                    </div>
+                    <div class="time-settings">
+                        <div class="time-setting-item">
+                            <label for="workDuration">工作时长 (分钟)</label>
+                            <input type="number" id="workDuration" min="1" max="60" value="25">
+                        </div>
+                        <div class="time-setting-item">
+                            <label for="shortBreakDuration">短休息 (分钟)</label>
+                            <input type="number" id="shortBreakDuration" min="1" max="30" value="5">
+                        </div>
+                        <div class="time-setting-item">
+                            <label for="longBreakDuration">长休息 (分钟)</label>
+                            <input type="number" id="longBreakDuration" min="1" max="60" value="15">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 历史记录 -->
+                <div class="history-section">
+                    <h2>📅 今日历史</h2>
+                    <div class="history-list" id="historyList">
+                        <p class="empty-message">暂无记录</p>
+                    </div>
+                    <button class="clear-btn" onclick="clearHistory()">清除历史</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
