@@ -16,45 +16,7 @@ let testAbortController = null;
  */
 document.addEventListener('DOMContentLoaded', function() {
     initFileUpload();
-    initTheme();
 });
-
-/**
- * 初始化主题
- */
-function initTheme() {
-    // 从 localStorage 读取保存的主题
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-mode');
-        updateThemeIcon(true);
-    }
-}
-
-/**
- * 切换主题
- */
-function toggleTheme() {
-    const body = document.body;
-    const isDark = body.classList.toggle('dark-mode');
-
-    // 保存主题到 localStorage
-    localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-    // 更新图标
-    updateThemeIcon(isDark);
-}
-
-/**
- * 更新主题图标
- * @param {boolean} isDark - 是否为黑夜模式
- */
-function updateThemeIcon(isDark) {
-    const themeIcon = document.getElementById('themeIcon');
-    if (themeIcon) {
-        themeIcon.textContent = isDark ? '☀️' : '🌙';
-    }
-}
 
 /**
  * 初始化文件上传功能

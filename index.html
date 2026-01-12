@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="个人工具集合 - 实用小工具和游戏">
     <title>工具箱</title>
     <link rel="stylesheet" href="main.css">
+    <script src="theme.js"></script>
 </head>
 <body>
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
+            <span class="theme-icon" id="themeIcon">🌙</span>
+        </button>
+    </div>
+
     <div class="container">
         <header class="header">
             <h1 class="main-title">工具箱</h1>

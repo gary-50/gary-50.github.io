@@ -2,8 +2,9 @@
    番茄钟 - 统一暗色主题
    ======================================== */
 
-/* 设计变量 */
-:root {
+/* 设计变量 - 深色主题（默认） */
+:root,
+[data-theme="dark"] {
     /* 颜色系统 */
     --bg-dark: #0a0a0b;
     --bg-surface: #111113;
@@ -43,6 +44,52 @@
     /* 动画 */
     --transition-fast: 0.15s ease;
     --transition-normal: 0.25s ease;
+
+    /* 背景渐变 */
+    --bg-gradient-1: rgba(239, 68, 68, 0.06);
+    --bg-gradient-2: rgba(16, 185, 129, 0.04);
+    --dot-color: rgba(255, 255, 255, 0.02);
+}
+
+/* 浅色主题 */
+[data-theme="light"] {
+    /* 颜色系统 */
+    --bg-dark: #f5f5f7;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f0f0f2;
+    --bg-elevated: #e8e8ec;
+
+    /* 边框 */
+    --border-subtle: #e0e0e5;
+    --border-default: #d0d0d5;
+    --border-hover: #b0b0b8;
+
+    /* 文字 */
+    --text-primary: #1a1a1f;
+    --text-secondary: #5c5c66;
+    --text-muted: #8b8b95;
+
+    /* 强调色 - 番茄红 */
+    --accent: #dc2626;
+    --accent-hover: #ef4444;
+    --accent-dim: rgba(220, 38, 38, 0.1);
+    --accent-glow: rgba(220, 38, 38, 0.2);
+
+    /* 模式颜色 */
+    --work-color: #dc2626;
+    --short-break-color: #059669;
+    --long-break-color: #0891b2;
+
+    /* 效果 */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+
+    /* 背景渐变 */
+    --bg-gradient-1: rgba(220, 38, 38, 0.05);
+    --bg-gradient-2: rgba(5, 150, 105, 0.03);
+    --dot-color: rgba(0, 0, 0, 0.03);
 }
 
 * {
@@ -71,8 +118,8 @@ body::before {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(239, 68, 68, 0.06), transparent),
-        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.04), transparent 40%);
+        radial-gradient(ellipse 80% 50% at 50% -20%, var(--bg-gradient-1), transparent),
+        radial-gradient(circle at 80% 80%, var(--bg-gradient-2), transparent 40%);
     pointer-events: none;
     z-index: 0;
 }
@@ -84,7 +131,7 @@ body::after {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
     background-size: 32px 32px;
     pointer-events: none;
     z-index: 0;
@@ -752,4 +799,36 @@ h2 {
 ::selection {
     background: var(--work-color);
     color: white;
+}
+
+/* 返回按钮 */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-sm);
+}
+
+.back-btn:hover {
+    background: var(--bg-card-hover);
+    border-color: var(--border-hover);
+    transform: scale(1.05);
+    color: var(--accent);
+}
+
+.back-btn:active {
+    transform: scale(0.95);
 }

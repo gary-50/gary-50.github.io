@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +9,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="../../theme.js"></script>
 </head>
 <body>
+    <a href="../../index.html" class="back-btn" title="返回主页">
+        <span>←</span>
+    </a>
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">
+            <span class="theme-icon" id="themeIcon">🌙</span>
+        </button>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1 class="title">2048</h1>

@@ -487,14 +487,17 @@ class Game2048 {
     toggleAutoPlay() {
         this.autoPlayMode = !this.autoPlayMode;
         const autoPlayBtn = document.getElementById('auto-play');
+        const speedControl = document.getElementById('speed-control');
 
         if (this.autoPlayMode) {
             autoPlayBtn.textContent = '停止自动';
             autoPlayBtn.classList.add('active');
+            speedControl.classList.add('show');
             this.startAutoPlay();
         } else {
             autoPlayBtn.textContent = '自动模式';
             autoPlayBtn.classList.remove('active');
+            speedControl.classList.remove('show');
             this.stopAutoPlay();
         }
     }

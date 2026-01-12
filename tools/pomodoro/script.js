@@ -35,27 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderHistory();
     initSettings();
     requestNotificationPermission();
-    loadTheme();
 });
-
-function loadTheme() {
-    const theme = localStorage.getItem('pomodoroTheme') || 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    updateThemeIcon(theme);
-}
-
-function toggleTheme() {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('pomodoroTheme', newTheme);
-    updateThemeIcon(newTheme);
-}
-
-function updateThemeIcon(theme) {
-    const icon = document.getElementById('themeIcon');
-    icon.textContent = theme === 'dark' ? '☀️' : '🌙';
-}
 
 function loadSettings() {
     const saved = localStorage.getItem('pomodoroSettings');

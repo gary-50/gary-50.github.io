@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="番茄钟 - 提升专注力的时间管理工具">
     <title>番茄钟</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="../../theme.js"></script>
 </head>
 <body>
+    <a href="../../index.html" class="back-btn" title="返回主页">
+        <span>←</span>
+    </a>
+    <div class="theme-toggle-container">
+        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">
+            <span class="theme-icon" id="themeIcon">🌙</span>
+        </button>
+    </div>
+
     <div class="container">
-        <div class="theme-toggle-container">
-            <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()" title="切换主题">
-                <span class="theme-icon" id="themeIcon">🌙</span>
-            </button>
-        </div>
-        
         <h1>🍅 番茄钟</h1>
         <p class="subtitle">专注工作，高效休息</p>
 
