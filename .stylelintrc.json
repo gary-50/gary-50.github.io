@@ -1,0 +1,16 @@
+{
+    "extends": ["stylelint-config-standard"],
+    "rules": {
+        "alpha-value-notation": "number",
+        "color-function-notation": "legacy",
+        "media-feature-range-notation": "prefix",
+        "rule-empty-line-before": null,
+        "declaration-empty-line-before": null,
+        "no-descending-specificity": null,
+        "selector-class-pattern": null,
+        "selector-no-vendor-prefix": null,
+        "property-no-vendor-prefix": null,
+        "value-no-vendor-prefix": null
+    },
+    "ignoreFiles": ["node_modules/**", ".git/**", ".claude/**"]
+}

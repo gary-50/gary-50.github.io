@@ -35,7 +35,7 @@ class Game2048 {
         this.speedSettings = {
             1: { delay: 1000, label: '很慢' },
             2: { delay: 600, label: '慢速' },
-            3: { delay: 300, label: '快速' }
+            3: { delay: 300, label: '快速' },
         };
 
         this.init();
@@ -86,18 +86,26 @@ class Game2048 {
         });
 
         // 触摸事件
-        this.tileContainer.addEventListener('touchstart', (e) => {
-            this.touchStartX = e.changedTouches[0].screenX;
-            this.touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
+        this.tileContainer.addEventListener(
+            'touchstart',
+            (e) => {
+                this.touchStartX = e.changedTouches[0].screenX;
+                this.touchStartY = e.changedTouches[0].screenY;
+            },
+            { passive: true }
+        );
 
-        this.tileContainer.addEventListener('touchend', (e) => {
-            this.touchEndX = e.changedTouches[0].screenX;
-            this.touchEndY = e.changedTouches[0].screenY;
-            if (!this.isMoving) {
-                this.handleSwipe();
-            }
-        }, { passive: true });
+        this.tileContainer.addEventListener(
+            'touchend',
+            (e) => {
+                this.touchEndX = e.changedTouches[0].screenX;
+                this.touchEndY = e.changedTouches[0].screenY;
+                if (!this.isMoving) {
+                    this.handleSwipe();
+                }
+            },
+            { passive: true }
+        );
     }
 
     handleSwipe() {
@@ -126,10 +134,10 @@ class Game2048 {
 
     handleKeyPress(key) {
         const keyMap = {
-            'ArrowUp': 'up',
-            'ArrowDown': 'down',
-            'ArrowLeft': 'left',
-            'ArrowRight': 'right'
+            ArrowUp: 'up',
+            ArrowDown: 'down',
+            ArrowLeft: 'left',
+            ArrowRight: 'right',
         };
 
         const direction = keyMap[key];
@@ -144,10 +152,10 @@ class Game2048 {
         this.prepareTiles();
 
         const vectors = {
-            'up': { row: -1, col: 0 },
-            'down': { row: 1, col: 0 },
-            'left': { row: 0, col: -1 },
-            'right': { row: 0, col: 1 }
+            up: { row: -1, col: 0 },
+            down: { row: 1, col: 0 },
+            left: { row: 0, col: -1 },
+            right: { row: 0, col: 1 },
         };
 
         const vector = vectors[direction];
@@ -155,8 +163,8 @@ class Game2048 {
 
         let moved = false;
 
-        traversals.row.forEach(row => {
-            traversals.col.forEach(col => {
+        traversals.row.forEach((row) => {
+            traversals.col.forEach((col) => {
                 const tile = this.getTileAt({ row, col });
 
                 if (tile) {
@@ -181,8 +189,10 @@ class Game2048 {
                         moved = true;
                     } else {
                         // 移动方块
-                        if (positions.farthest.row !== tile.position.row ||
-                            positions.farthest.col !== tile.position.col) {
+                        if (
+                            positions.farthest.row !== tile.position.row ||
+                            positions.farthest.col !== tile.position.col
+                        ) {
                             tile.position = positions.farthest;
                             moved = true;
                         }
@@ -205,7 +215,7 @@ class Game2048 {
     }
 
     prepareTiles() {
-        this.tiles.forEach(tile => {
+        this.tiles.forEach((tile) => {
             tile.previousPosition = null;
             tile.mergedFrom = null;
             tile.isNew = false;
@@ -233,25 +243,28 @@ class Game2048 {
             previous = position;
             position = {
                 row: previous.row + vector.row,
-                col: previous.col + vector.col
+                col: previous.col + vector.col,
             };
         } while (this.withinBounds(position) && !this.getTileAt(position));
 
         return {
             farthest: previous,
-            next: position
+            next: position,
         };
     }
 
     withinBounds(position) {
-        return position.row >= 0 && position.row < this.size &&
-               position.col >= 0 && position.col < this.size;
+        return (
+            position.row >= 0 &&
+            position.row < this.size &&
+            position.col >= 0 &&
+            position.col < this.size
+        );
     }
 
     getTileAt(position) {
-        return this.tiles.find(tile =>
-            tile.position.row === position.row &&
-            tile.position.col === position.col
+        return this.tiles.find(
+            (tile) => tile.position.row === position.row && tile.position.col === position.col
         );
     }
 
@@ -283,9 +296,9 @@ class Game2048 {
     renderTiles() {
         // 清除所有已删除的方块
         const tileElements = this.tileContainer.querySelectorAll('.tile');
-        tileElements.forEach(element => {
+        tileElements.forEach((element) => {
             const tileId = parseFloat(element.dataset.tileId);
-            const tileExists = this.tiles.some(tile => tile.id === tileId);
+            const tileExists = this.tiles.some((tile) => tile.id === tileId);
 
             if (!tileExists) {
                 element.classList.add('tile-removed');
@@ -294,7 +307,7 @@ class Game2048 {
         });
 
         // 渲染所有方块
-        this.tiles.forEach(tile => {
+        this.tiles.forEach((tile) => {
             let tileElement = this.tileContainer.querySelector(`[data-tile-id="${tile.id}"]`);
             const isNewElement = !tileElement;
 
@@ -395,13 +408,13 @@ class Game2048 {
             const adjustedGap = 10;
             return {
                 x: col * (adjustedCellSize + adjustedGap),
-                y: row * (adjustedCellSize + adjustedGap)
+                y: row * (adjustedCellSize + adjustedGap),
             };
         }
 
         return {
             x: col * (cellSize + gap),
-            y: row * (cellSize + gap)
+            y: row * (cellSize + gap),
         };
     }
 
@@ -417,7 +430,7 @@ class Game2048 {
 
     checkGameOver() {
         // 检查是否赢了
-        if (this.tiles.some(tile => tile.value === 2048)) {
+        if (this.tiles.some((tile) => tile.value === 2048)) {
             this.showMessage('你赢了！');
             return;
         }
@@ -430,14 +443,14 @@ class Game2048 {
         // 检查是否还能合并
         for (let tile of this.tiles) {
             const directions = [
-                { row: 0, col: 1 },  // 右
-                { row: 1, col: 0 }   // 下
+                { row: 0, col: 1 }, // 右
+                { row: 1, col: 0 }, // 下
             ];
 
             for (let direction of directions) {
                 const neighbor = {
                     row: tile.position.row + direction.row,
-                    col: tile.position.col + direction.col
+                    col: tile.position.col + direction.col,
                 };
 
                 if (this.withinBounds(neighbor)) {
@@ -563,15 +576,15 @@ class Game2048 {
     // 模拟一次移动
     simulateMove(direction) {
         // 保存当前状态
-        const originalTiles = JSON.parse(JSON.stringify(
-            this.tiles.map(t => ({ position: t.position, value: t.value }))
-        ));
+        const originalTiles = JSON.parse(
+            JSON.stringify(this.tiles.map((t) => ({ position: t.position, value: t.value })))
+        );
 
         const vectors = {
-            'up': { row: -1, col: 0 },
-            'down': { row: 1, col: 0 },
-            'left': { row: 0, col: -1 },
-            'right': { row: 0, col: 1 }
+            up: { row: -1, col: 0 },
+            down: { row: 1, col: 0 },
+            left: { row: 0, col: -1 },
+            right: { row: 0, col: 1 },
         };
 
         const vector = vectors[direction];
@@ -583,21 +596,24 @@ class Game2048 {
 
         // 创建一个辅助函数来获取模拟的方块
         const getTileAt = (tiles, position) => {
-            return tiles.find(tile =>
-                tile.position.row === position.row &&
-                tile.position.col === position.col
+            return tiles.find(
+                (tile) => tile.position.row === position.row && tile.position.col === position.col
             );
         };
 
-        traversals.row.forEach(row => {
-            traversals.col.forEach(col => {
-                const tileIndex = simulatedTiles.findIndex(t =>
-                    t.position.row === row && t.position.col === col
+        traversals.row.forEach((row) => {
+            traversals.col.forEach((col) => {
+                const tileIndex = simulatedTiles.findIndex(
+                    (t) => t.position.row === row && t.position.col === col
                 );
 
                 if (tileIndex !== -1) {
                     const tile = simulatedTiles[tileIndex];
-                    const positions = this.findFarthestPositionSimulation(tile.position, vector, simulatedTiles);
+                    const positions = this.findFarthestPositionSimulation(
+                        tile.position,
+                        vector,
+                        simulatedTiles
+                    );
                     const next = getTileAt(simulatedTiles, positions.next);
 
                     if (next && next.value === tile.value && !next.merged) {
@@ -606,22 +622,31 @@ class Game2048 {
                         scoreGain += mergedValue;
 
                         // 移除两个方块，添加合并后的方块
-                        simulatedTiles = simulatedTiles.filter(t =>
-                            !(t.position.row === tile.position.row && t.position.col === tile.position.col) &&
-                            !(t.position.row === next.position.row && t.position.col === next.position.col)
+                        simulatedTiles = simulatedTiles.filter(
+                            (t) =>
+                                !(
+                                    t.position.row === tile.position.row &&
+                                    t.position.col === tile.position.col
+                                ) &&
+                                !(
+                                    t.position.row === next.position.row &&
+                                    t.position.col === next.position.col
+                                )
                         );
 
                         simulatedTiles.push({
                             position: positions.next,
                             value: mergedValue,
-                            merged: true
+                            merged: true,
                         });
 
                         moved = true;
                     } else {
                         // 移动
-                        if (positions.farthest.row !== tile.position.row ||
-                            positions.farthest.col !== tile.position.col) {
+                        if (
+                            positions.farthest.row !== tile.position.row ||
+                            positions.farthest.col !== tile.position.col
+                        ) {
                             tile.position = positions.farthest;
                             moved = true;
                         }
@@ -633,7 +658,7 @@ class Game2048 {
         return {
             moved: moved,
             tiles: simulatedTiles,
-            scoreGain: scoreGain
+            scoreGain: scoreGain,
         };
     }
 
@@ -641,9 +666,8 @@ class Game2048 {
         let previous;
 
         const getTileAt = (pos) => {
-            return tiles.find(tile =>
-                tile.position.row === pos.row &&
-                tile.position.col === pos.col
+            return tiles.find(
+                (tile) => tile.position.row === pos.row && tile.position.col === pos.col
             );
         };
 
@@ -651,13 +675,13 @@ class Game2048 {
             previous = position;
             position = {
                 row: previous.row + vector.row,
-                col: previous.col + vector.col
+                col: previous.col + vector.col,
             };
         } while (this.withinBounds(position) && !getTileAt(position));
 
         return {
             farthest: previous,
-            next: position
+            next: position,
         };
     }
 
@@ -693,8 +717,10 @@ class Game2048 {
         let score = 0;
 
         // 创建二维数组
-        const grid = Array(this.size).fill(null).map(() => Array(this.size).fill(0));
-        tiles.forEach(tile => {
+        const grid = Array(this.size)
+            .fill(null)
+            .map(() => Array(this.size).fill(0));
+        tiles.forEach((tile) => {
             grid[tile.position.row][tile.position.col] = tile.value;
         });
 
@@ -730,28 +756,29 @@ class Game2048 {
     evaluateMaxTilePosition(tiles) {
         if (tiles.length === 0) return 0;
 
-        const maxTile = tiles.reduce((max, tile) =>
-            tile.value > max.value ? tile : max
-        );
+        const maxTile = tiles.reduce((max, tile) => (tile.value > max.value ? tile : max));
 
         // 角落位置得分最高
         const corners = [
             { row: 0, col: 0 },
             { row: 0, col: 3 },
             { row: 3, col: 0 },
-            { row: 3, col: 3 }
+            { row: 3, col: 3 },
         ];
 
         for (let corner of corners) {
-            if (maxTile.position.row === corner.row &&
-                maxTile.position.col === corner.col) {
+            if (maxTile.position.row === corner.row && maxTile.position.col === corner.col) {
                 return 100;
             }
         }
 
         // 边缘位置得分次之
-        if (maxTile.position.row === 0 || maxTile.position.row === 3 ||
-            maxTile.position.col === 0 || maxTile.position.col === 3) {
+        if (
+            maxTile.position.row === 0 ||
+            maxTile.position.row === 3 ||
+            maxTile.position.col === 0 ||
+            maxTile.position.col === 3
+        ) {
             return 50;
         }
 
@@ -762,21 +789,20 @@ class Game2048 {
         let potential = 0;
 
         const getTileAt = (position) => {
-            return tiles.find(tile =>
-                tile.position.row === position.row &&
-                tile.position.col === position.col
+            return tiles.find(
+                (tile) => tile.position.row === position.row && tile.position.col === position.col
             );
         };
 
-        tiles.forEach(tile => {
+        tiles.forEach((tile) => {
             const neighbors = [
                 { row: tile.position.row - 1, col: tile.position.col },
                 { row: tile.position.row + 1, col: tile.position.col },
                 { row: tile.position.row, col: tile.position.col - 1 },
-                { row: tile.position.row, col: tile.position.col + 1 }
+                { row: tile.position.row, col: tile.position.col + 1 },
             ];
 
-            neighbors.forEach(pos => {
+            neighbors.forEach((pos) => {
                 if (this.withinBounds(pos)) {
                     const neighbor = getTileAt(pos);
                     if (neighbor && neighbor.value === tile.value) {

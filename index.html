@@ -1,73 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN" data-theme="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="个人工具集合 - 实用小工具和游戏">
-    <title>工具箱</title>
-    <link rel="stylesheet" href="main.css">
-    <script src="theme.js"></script>
-</head>
-<body>
-    <div class="theme-toggle-container">
-        <button id="themeToggle" class="theme-toggle-btn" onclick="toggleTheme()">
-            <span class="theme-icon" id="themeIcon">🌙</span>
-        </button>
-    </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="dark light" />
+        <meta name="description" content="个人工具集合 - 实用小工具和游戏" />
+        <title>工具箱</title>
+        <link rel="stylesheet" href="base.css" />
+        <link rel="stylesheet" href="main.css" />
+        <script src="theme.js"></script>
+    </head>
+    <body>
+        <div class="theme-toggle-container">
+            <button
+                id="themeToggle"
+                class="theme-toggle-btn"
+                type="button"
+                aria-label="切换主题"
+                title="切换主题"
+            >
+                <span class="theme-icon" id="themeIcon">🌙</span>
+            </button>
+        </div>
 
-    <div class="container">
-        <header class="header">
-            <h1 class="main-title">工具箱</h1>
-            <p class="subtitle">一些自用的小工具</p>
-        </header>
+        <div class="container">
+            <header class="header">
+                <h1 class="main-title">工具箱</h1>
+                <p class="subtitle">一些自用的小工具</p>
+            </header>
 
-        <main class="content">
-            <section class="category">
-                <h2 class="category-title">工具</h2>
-                <div class="card-grid">
-                    <a href="tools/pomodoro/index.html" class="card">
-                        <div class="card-icon">🍅</div>
-                        <div class="card-content">
-                            <h3 class="card-title">番茄钟</h3>
-                            <p class="card-description">专注计时，提升效率</p>
-                        </div>
-                        <div class="card-tags">
-                            <span class="tag">效率</span>
-                        </div>
-                    </a>
-                    <a href="tools/api-tester/index.html" class="card">
-                        <div class="card-icon">🔑</div>
-                        <div class="card-content">
-                            <h3 class="card-title">API Key 测试</h3>
-                            <p class="card-description">批量验证 OpenAI 格式 API 密钥</p>
-                        </div>
-                        <div class="card-tags">
-                            <span class="tag">dev</span>
-                        </div>
-                    </a>
-                </div>
-            </section>
+            <main class="content">
+                <section class="category">
+                    <h2 class="category-title">工具</h2>
+                    <div class="card-grid">
+                        <a href="tools/pomodoro/index.html" class="card">
+                            <div class="card-icon">🍅</div>
+                            <div class="card-content">
+                                <h3 class="card-title">番茄钟</h3>
+                                <p class="card-description">专注计时，提升效率</p>
+                            </div>
+                            <div class="card-tags">
+                                <span class="tag">效率</span>
+                            </div>
+                        </a>
+                        <a href="tools/api-tester/index.html" class="card">
+                            <div class="card-icon">🔑</div>
+                            <div class="card-content">
+                                <h3 class="card-title">API Key 测试</h3>
+                                <p class="card-description">批量验证 OpenAI 格式 API 密钥</p>
+                            </div>
+                            <div class="card-tags">
+                                <span class="tag">dev</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
 
-            <section class="category">
-                <h2 class="category-title">游戏</h2>
-                <div class="card-grid">
-                    <a href="games/2048/index.html" class="card">
-                        <div class="card-icon">🎮</div>
-                        <div class="card-content">
-                            <h3 class="card-title">2048</h3>
-                            <p class="card-description">经典数字合并游戏，支持 AI 自动模式</p>
-                        </div>
-                        <div class="card-tags">
-                            <span class="tag">game</span>
-                        </div>
-                    </a>
-                </div>
-            </section>
-        </main>
+                <section class="category">
+                    <h2 class="category-title">游戏</h2>
+                    <div class="card-grid">
+                        <a href="games/2048/index.html" class="card">
+                            <div class="card-icon">🎮</div>
+                            <div class="card-content">
+                                <h3 class="card-title">2048</h3>
+                                <p class="card-description">经典数字合并游戏，支持 AI 自动模式</p>
+                            </div>
+                            <div class="card-tags">
+                                <span class="tag">game</span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+            </main>
 
-        <footer class="footer">
-            <p>持续更新中...</p>
-        </footer>
-    </div>
-</body>
+            <footer class="footer">
+                <p>持续更新中...</p>
+            </footer>
+        </div>
+    </body>
 </html>

@@ -59,13 +59,16 @@ AI 通过模拟所有可能的移动方向，评估每个方向的得分，选�
 ### 核心类
 
 #### `Tile` 类
+
 表示游戏中的单个方块，包含：
+
 - 位置信息（行、列）
 - 数值
 - 合并状态
 - 动画状态
 
 #### `Game2048` 类
+
 游戏主控制器，主要方法：
 
 - `init()`: 初始化游戏
@@ -80,16 +83,19 @@ AI 通过模拟所有可能的移动方向，评估每个方向的得分，选�
 ### 关键特性实现
 
 **动画系统**
+
 - 使用 CSS `transform` 和 `transition` 实现流畅的移动动画
 - CSS 变量 `--tile-x` 和 `--tile-y` 控制方块位置
 - 关键帧动画处理出现、合并和移除效果
 
 **触摸支持**
+
 - 监听 `touchstart` 和 `touchend` 事件
 - 计算滑动距离和方向
 - 最小滑动距离阈值防止误触
 
 **本地存储**
+
 - 使用 `localStorage` 保存最高分
 - 页面刷新后自动恢复历史最高分
 
@@ -101,6 +107,7 @@ AI 通过模拟所有可能的移动方向，评估每个方向的得分，选�
 - 移动端浏览器
 
 需要支持以下特性：
+
 - ES6 类语法
 - CSS Grid 和 Flexbox
 - CSS 变量
@@ -119,7 +126,7 @@ this.speedSettings = {
     2: { delay: 600, label: '慢速' },
     3: { delay: 300, label: '中速' },
     4: { delay: 150, label: '快速' },
-    5: { delay: 50, label: '极快' }
+    5: { delay: 50, label: '极快' },
 };
 ```
 
@@ -139,9 +146,9 @@ this.speedSettings = {
 在 [game.js](game.js#L664-L684) 的 `evaluateBoard` 方法中调整各项权重：
 
 ```javascript
-score += scoreGain * 10;        // 分数增益权重
-score += emptySpaces * 100;     // 空格数量权重
-score += this.calculateMonotonicity(tiles) * 50;  // 单调性权重
+score += scoreGain * 10; // 分数增益权重
+score += emptySpaces * 100; // 空格数量权重
+score += this.calculateMonotonicity(tiles) * 50; // 单调性权重
 ```
 
 ## 许可证

@@ -4,7 +4,7 @@
 
 /* 设计变量 - 深色主题（默认） */
 :root,
-[data-theme="dark"] {
+[data-theme='dark'] {
     /* 颜色系统 */
     --bg-dark: #0a0a0b;
     --bg-surface: #111113;
@@ -52,11 +52,11 @@
 }
 
 /* 浅色主题 */
-[data-theme="light"] {
+[data-theme='light'] {
     /* 颜色系统 */
     --bg-dark: #f5f5f7;
-    --bg-surface: #ffffff;
-    --bg-card: #ffffff;
+    --bg-surface: #fff;
+    --bg-card: #fff;
     --bg-card-hover: #f0f0f2;
     --bg-elevated: #e8e8ec;
 
@@ -113,10 +113,7 @@ body {
 body::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background:
         radial-gradient(ellipse 80% 50% at 50% -20%, var(--bg-gradient-1), transparent),
         radial-gradient(circle at 80% 80%, var(--bg-gradient-2), transparent 40%);
@@ -127,10 +124,7 @@ body::before {
 body::after {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
     background-size: 32px 32px;
     pointer-events: none;
@@ -142,41 +136,18 @@ body::after {
     margin: 0 auto;
     position: relative;
     z-index: 1;
-    animation: fadeIn 0.5s ease-out;
+    animation: fade-in 0.5s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* 主题切换 */
-.theme-toggle-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-}
-
-.theme-toggle-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
-}
-
-.theme-toggle-btn:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-hover);
-    transform: scale(1.05);
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 标题 */
@@ -242,19 +213,19 @@ h1 {
     background: var(--accent-dim);
 }
 
-.mode-btn.active[data-mode="work"] {
+.mode-btn.active[data-mode='work'] {
     --accent: #ef4444;
     --accent-dim: rgba(239, 68, 68, 0.12);
     border-color: var(--work-color);
     background: rgba(239, 68, 68, 0.1);
 }
 
-.mode-btn.active[data-mode="shortBreak"] {
+.mode-btn.active[data-mode='shortBreak'] {
     border-color: var(--short-break-color);
     background: rgba(16, 185, 129, 0.1);
 }
 
-.mode-btn.active[data-mode="longBreak"] {
+.mode-btn.active[data-mode='longBreak'] {
     border-color: var(--long-break-color);
     background: rgba(6, 182, 212, 0.1);
 }
@@ -303,7 +274,9 @@ h1 {
     stroke: var(--work-color);
     stroke-width: 6;
     stroke-linecap: round;
-    transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+    transition:
+        stroke-dashoffset 1s linear,
+        stroke 0.3s ease;
     filter: drop-shadow(0 0 8px var(--accent-glow));
 }
 
@@ -512,12 +485,22 @@ h2 {
     border-radius: var(--radius-sm);
     border-left: 3px solid var(--work-color);
     transition: all var(--transition-fast);
-    animation: slideIn 0.2s ease-out;
+    animation: slide-in 0.2s ease-out;
 }
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
+.task-item:not(.completed) {
+    cursor: pointer;
+}
+
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .task-item:hover {
@@ -527,6 +510,11 @@ h2 {
 .task-item.completed {
     opacity: 0.5;
     border-left-color: var(--text-muted);
+}
+
+.task-item.selected {
+    border-left-color: var(--task-selected-border, #ffe66d);
+    border-left-width: 6px;
 }
 
 .task-checkbox {
@@ -596,7 +584,7 @@ h2 {
     font-size: 0.9rem;
 }
 
-.setting-item input[type="checkbox"] {
+.setting-item input[type='checkbox'] {
     width: 18px;
     height: 18px;
     cursor: pointer;
@@ -654,7 +642,7 @@ h2 {
     background: var(--bg-elevated);
     border-radius: var(--radius-sm);
     font-size: 0.85rem;
-    animation: slideIn 0.2s ease-out;
+    animation: slide-in 0.2s ease-out;
 }
 
 .history-time {
@@ -770,8 +758,13 @@ h2 {
 
 /* 计时脉冲动画 */
 @keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.02);
+    }
 }
 
 .timer-circle.pulse {
@@ -799,36 +792,4 @@ h2 {
 ::selection {
     background: var(--work-color);
     color: white;
-}
-
-/* 返回按钮 */
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
-}
-
-.back-btn:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-hover);
-    transform: scale(1.05);
-    color: var(--accent);
-}
-
-.back-btn:active {
-    transform: scale(0.95);
 }

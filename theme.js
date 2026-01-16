@@ -3,81 +3,110 @@
  * 所有页面共享，使用 data-theme 属性和统一的 localStorage 键
  */
 
-(function() {
+(() => {
+    'use strict';
+
     const THEME_KEY = 'site-theme';
+    const THEMES = {
+        dark: 'dark',
+        light: 'light',
+    };
 
-    /**
-     * 获取保存的主题，如果没有则根据系统偏好返回默认值
-     */
-    function getSavedTheme() {
-        const saved = localStorage.getItem(THEME_KEY);
-        if (saved) {
-            return saved;
+    function safeGetItem(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch {
+            return null;
         }
-        // 检测系统偏好
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-            return 'light';
-        }
-        return 'dark';
     }
 
-    /**
-     * 应用主题
-     */
-    function applyTheme(theme) {
+    function safeSetItem(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch {
+            // ignore
+        }
+    }
+
+    function getSystemTheme() {
+        if (!window.matchMedia) {
+            return THEMES.dark;
+        }
+
+        return window.matchMedia('(prefers-color-scheme: light)').matches
+            ? THEMES.light
+            : THEMES.dark;
+    }
+
+    function getInitialTheme() {
+        return safeGetItem(THEME_KEY) || getSystemTheme();
+    }
+
+    function getDocumentTheme() {
+        return document.documentElement.getAttribute('data-theme') || THEMES.dark;
+    }
+
+    function setDocumentTheme(theme) {
         document.documentElement.setAttribute('data-theme', theme);
-        updateThemeIcon(theme);
     }
 
-    /**
-     * 更新主题图标
-     */
-    function updateThemeIcon(theme) {
+    function updateThemeToggleUI(theme) {
         const icon = document.getElementById('themeIcon');
         if (icon) {
-            icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            icon.textContent = theme === THEMES.dark ? '☀️' : '🌙';
+        }
+
+        const toggleButton = document.getElementById('themeToggle');
+        if (toggleButton) {
+            const nextThemeLabel = theme === THEMES.dark ? '切换到浅色主题' : '切换到深色主题';
+            toggleButton.setAttribute('aria-label', nextThemeLabel);
+            toggleButton.setAttribute('title', nextThemeLabel);
         }
     }
 
-    /**
-     * 切换主题
-     */
-    function toggleTheme() {
-        const current = document.documentElement.getAttribute('data-theme') || 'dark';
-        const newTheme = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem(THEME_KEY, newTheme);
-        updateThemeIcon(newTheme);
+    function applyTheme(theme) {
+        setDocumentTheme(theme);
+        updateThemeToggleUI(theme);
     }
 
-    /**
-     * 初始化主题
-     */
-    function initTheme() {
-        const theme = getSavedTheme();
-        applyTheme(theme);
+    function toggleTheme() {
+        const current = getDocumentTheme();
+        const nextTheme = current === THEMES.dark ? THEMES.light : THEMES.dark;
+        applyTheme(nextTheme);
+        safeSetItem(THEME_KEY, nextTheme);
+    }
+
+    function bindThemeToggleButton() {
+        const toggleButton = document.getElementById('themeToggle');
+        if (!toggleButton) {
+            return;
+        }
+
+        toggleButton.addEventListener('click', toggleTheme);
+        updateThemeToggleUI(getDocumentTheme());
     }
 
     // 在 DOM 加载前尽早应用主题，避免闪烁
-    initTheme();
+    applyTheme(getInitialTheme());
 
-    // DOM 加载后再次确认图标更新
-    document.addEventListener('DOMContentLoaded', function() {
-        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
-        updateThemeIcon(theme);
+    document.addEventListener('DOMContentLoaded', () => {
+        bindThemeToggleButton();
     });
 
-    // 监听系统主题变化
+    // 监听系统主题变化（仅当用户未手动设置过主题时）
     if (window.matchMedia) {
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-            // 只有在用户没有手动设置过主题时才跟随系统
-            if (!localStorage.getItem(THEME_KEY)) {
-                applyTheme(e.matches ? 'dark' : 'light');
+        const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
+        const onChange = (event) => {
+            if (safeGetItem(THEME_KEY)) {
+                return;
             }
-        });
-    }
+            applyTheme(event.matches ? THEMES.light : THEMES.dark);
+        };
 
-    // 暴露全局函数
-    window.toggleTheme = toggleTheme;
-    window.initTheme = initTheme;
+        if (typeof mediaQuery.addEventListener === 'function') {
+            mediaQuery.addEventListener('change', onChange);
+        } else if (typeof mediaQuery.addListener === 'function') {
+            mediaQuery.addListener(onChange);
+        }
+    }
 })();

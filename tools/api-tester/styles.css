@@ -4,7 +4,7 @@
 
 /* 设计变量 - 深色主题（默认） */
 :root,
-[data-theme="dark"] {
+[data-theme='dark'] {
     /* 颜色系统 */
     --bg-dark: #0a0a0b;
     --bg-surface: #111113;
@@ -53,11 +53,11 @@
 }
 
 /* 浅色主题 */
-[data-theme="light"] {
+[data-theme='light'] {
     /* 颜色系统 */
     --bg-dark: #f5f5f7;
-    --bg-surface: #ffffff;
-    --bg-card: #ffffff;
+    --bg-surface: #fff;
+    --bg-card: #fff;
     --bg-card-hover: #f0f0f2;
     --bg-elevated: #e8e8ec;
 
@@ -115,10 +115,7 @@ body {
 body::before {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background:
         radial-gradient(ellipse 80% 50% at 50% -20%, var(--bg-gradient-1), transparent),
         radial-gradient(circle at 80% 80%, var(--bg-gradient-2), transparent 40%);
@@ -129,10 +126,7 @@ body::before {
 body::after {
     content: '';
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
     background-size: 32px 32px;
     pointer-events: none;
@@ -144,41 +138,18 @@ body::after {
     margin: 0 auto;
     position: relative;
     z-index: 1;
-    animation: fadeIn 0.5s ease-out;
+    animation: fade-in 0.5s ease-out;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* 主题切换 */
-.theme-toggle-container {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 100;
-}
-
-.theme-toggle-btn {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
-}
-
-.theme-toggle-btn:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-hover);
-    transform: scale(1.05);
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 标题 */
@@ -194,18 +165,34 @@ h1 {
 /* 输入区域 */
 .input-section {
     margin-bottom: 24px;
-    animation: slideIn 0.4s ease-out backwards;
+    animation: slide-in 0.4s ease-out backwards;
 }
 
-.input-section:nth-child(2) { animation-delay: 0.05s; }
-.input-section:nth-child(3) { animation-delay: 0.1s; }
-.input-section:nth-child(4) { animation-delay: 0.15s; }
-.input-section:nth-child(5) { animation-delay: 0.2s; }
-.input-section:nth-child(6) { animation-delay: 0.25s; }
+.input-section:nth-child(2) {
+    animation-delay: 0.05s;
+}
+.input-section:nth-child(3) {
+    animation-delay: 0.1s;
+}
+.input-section:nth-child(4) {
+    animation-delay: 0.15s;
+}
+.input-section:nth-child(5) {
+    animation-delay: 0.2s;
+}
+.input-section:nth-child(6) {
+    animation-delay: 0.25s;
+}
 
-@keyframes slideIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to { opacity: 1; transform: translateX(0); }
+@keyframes slide-in {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 label {
@@ -216,8 +203,8 @@ label {
     font-size: 0.9rem;
 }
 
-input[type="text"],
-input[type="number"],
+input[type='text'],
+input[type='number'],
 textarea,
 select {
     width: 100%;
@@ -230,22 +217,22 @@ select {
     color: var(--text-primary);
 }
 
-input[type="text"]::placeholder,
-input[type="number"]::placeholder,
+input[type='text']::placeholder,
+input[type='number']::placeholder,
 textarea::placeholder {
     color: var(--text-muted);
 }
 
-input[type="text"]:hover,
-input[type="number"]:hover,
+input[type='text']:hover,
+input[type='number']:hover,
 textarea:hover,
 select:hover {
     border-color: var(--border-hover);
     background: var(--bg-card-hover);
 }
 
-input[type="text"]:focus,
-input[type="number"]:focus,
+input[type='text']:focus,
+input[type='number']:focus,
 textarea:focus,
 select:focus {
     outline: none;
@@ -257,11 +244,11 @@ select:focus {
 textarea {
     min-height: 100px;
     resize: vertical;
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
     line-height: 1.5;
 }
 
-input[type="file"] {
+input[type='file'] {
     width: 100%;
     padding: 10px;
     background: var(--bg-elevated);
@@ -272,7 +259,7 @@ input[type="file"] {
     font-size: 0.85rem;
 }
 
-input[type="file"]::file-selector-button {
+input[type='file']::file-selector-button {
     padding: 8px 16px;
     background: var(--accent);
     color: white;
@@ -284,7 +271,7 @@ input[type="file"]::file-selector-button {
     transition: all var(--transition-fast);
 }
 
-input[type="file"]::file-selector-button:hover {
+input[type='file']::file-selector-button:hover {
     filter: brightness(1.1);
 }
 
@@ -338,6 +325,36 @@ button:disabled {
     filter: none;
 }
 
+.action-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.action-row button {
+    flex: 1;
+    width: auto;
+}
+
+.btn-grad-pink {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.btn-grad-yellow {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+.cancel-btn {
+    background: var(--error);
+}
+
 /* 进度条 */
 .progress {
     margin: 24px 0;
@@ -371,22 +388,18 @@ button:disabled {
 .progress-fill::after {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.2),
-        transparent
-    );
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 /* 结果区域 */
@@ -447,7 +460,7 @@ button:disabled {
     padding: 12px 14px;
     margin-bottom: 10px;
     border-radius: var(--radius-sm);
-    font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+    font-family: 'SF Mono', 'Fira Code', Consolas, monospace;
     font-size: 0.8rem;
     border-left: 3px solid var(--accent);
     transition: all var(--transition-fast);
@@ -580,7 +593,9 @@ button:disabled {
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 /* 滚动条 */
@@ -664,36 +679,4 @@ button:disabled {
 ::selection {
     background: var(--accent);
     color: white;
-}
-
-/* 返回按钮 */
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    z-index: 100;
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: all var(--transition-normal);
-    box-shadow: var(--shadow-sm);
-}
-
-.back-btn:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-hover);
-    transform: scale(1.05);
-    color: var(--accent);
-}
-
-.back-btn:active {
-    transform: scale(0.95);
 }
